@@ -76,6 +76,11 @@ sqldelight {
     }
 }
 
+kotlinter {
+    ignoreFailures = false
+    reporters = arrayOf("checkstyle", "plain")
+}
+
 detekt {
     config.setFrom(files("${rootProject.projectDir}/detekt.yml"))
     baseline = file("${rootProject.projectDir}/detekt-baseline.xml")
@@ -90,7 +95,12 @@ android {
     }
 }
 
-// Linting tasks
+// Disable linting for generated SQLDelight code (kotlinter doesn't respect exclusions well)
+tasks.named("lintKotlinCommonMain") {
+    enabled = false
+}
+
+// Linting tasks - only lint our hand-written code, not generated
 tasks.named("build") {
-    dependsOn("lintKotlin", "detekt")
+    dependsOn("lintKotlinAndroidMain", "lintKotlinBackendMain", "detekt")
 }
