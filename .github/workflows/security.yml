@@ -35,15 +35,15 @@ jobs:
         uses: trufflesecurity/trufflehog@main
         with:
           path: ./
-          base: ${{ github.event.repository.default_branch }}
-          head: HEAD
+          base: ${{ github.event.pull_request.base.sha || github.event.before }}
+          head: ${{ github.event.pull_request.head.sha || github.sha }}
           extra_args: --debug --only-verified
 
       - name: Run dependency check
         run: ./gradlew dependencyCheck --no-daemon || true
 
       - name: Comment on PR - Security
-        if: always()
+        if: github.event_name == 'pull_request'
         uses: actions/github-script@v7
         with:
           script: |
