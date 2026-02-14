@@ -26,4 +26,18 @@ allprojects {
             )
         }
     }
+
+    // Quality gates configuration
+    tasks.register("codeQualityCheck") {
+        dependsOn(":shared:lintKotlin")
+        dependsOn(":backend:lintKotlin")
+        dependsOn(":backend:detekt")
+        dependsOn(":shared:detekt")
+        description = "Run all code quality checks"
+    }
+
+    // Ensure tests include quality checks
+    tasks.withType<Test> {
+        finalizedBy("codeQualityCheck")
+    }
 }
