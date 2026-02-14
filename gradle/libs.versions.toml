@@ -1,18 +1,17 @@
 [versions]
 # Gradle and Kotlin
-gradle = "8.14.4"
+gradle = "9.3.1"
 kotlin = "2.3.10"
-agp = "8.7.3"
+agp = "9.0.1"
 ksp = "2.3.5"
 
 # Compose and UI
 compose = "1.10.1"
-composeCompiler = "1.5.11"
 
 # Android
 android-minSdk = "24"
-android-targetSdk = "35"
-android-compileSdk = "35"
+android-targetSdk = "36"
+android-compileSdk = "36"
 
 # Coroutines
 coroutines = "1.10.2"
@@ -186,3 +185,4 @@ ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
 sqldelight = { id = "app.cash.sqldelight", version.ref = "sqldelight" }
 detekt = { id = "io.gitlab.arturbosch.detekt", version = "1.23.6" }
 kotlinter = { id = "org.jmailen.kotlinter", version = "4.4.1" }
+android-kmp-library = { id = "com.android.kotlin.multiplatform.library", version.ref = "agp" }
