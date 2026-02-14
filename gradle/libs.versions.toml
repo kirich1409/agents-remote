@@ -33,7 +33,7 @@ decompose = "2.2.2"
 essenty = "1.3.0"
 
 # Database
-sqldelight = "2.0.2"
+sqldelight = "2.2.1"
 
 # DI
 koin = "3.5.6"
