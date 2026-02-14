@@ -14,6 +14,8 @@ import io.ktor.server.routing.get
 import io.ktor.server.routing.post
 import io.ktor.server.routing.route
 import io.ktor.server.routing.routing
+import io.ktor.server.websocket.webSocket
+import io.ktor.websocket.close
 import org.koin.ktor.ext.inject
 
 /**
@@ -27,6 +29,20 @@ public fun Application.configureChatRoutes() {
 
     routing {
         chatRoutes(chatHandler)
+    }
+}
+
+/**
+ * Configures chat WebSocket routes for the application.
+ *
+ * Registers WebSocket endpoint for real-time chat messaging.
+ * Requires WebSocketHandler to be available in the DI container.
+ */
+public fun Application.configureChatWebSocketRoutes() {
+    val webSocketHandler: WebSocketHandler by inject()
+
+    routing {
+        chatWebSocketRoutes(webSocketHandler)
     }
 }
 
@@ -143,6 +159,47 @@ private fun Route.chatRoutes(chatHandler: ChatHandler) {
                 val chatId = call.parameters["chatId"] ?: ""
                 // TODO: Implement getMessages in ChatHandler and use case
                 call.respond(HttpStatusCode.OK, emptyList<String>())
+            }
+        }
+    }
+}
+
+/**
+ * Defines chat WebSocket routes.
+ *
+ * Routes:
+ * - WS /ws/chats/{chatId} - WebSocket connection for real-time chat messaging
+ *
+ * @param webSocketHandler The WebSocket handler for managing connections.
+ */
+private fun Route.chatWebSocketRoutes(webSocketHandler: WebSocketHandler) {
+    route("/ws/chats") {
+        /**
+         * WS /ws/chats/{chatId}
+         *
+         * Establishes a WebSocket connection for a chat.
+         *
+         * Operations:
+         * - Subscribes the client to real-time messages for the chat
+         * - Receives incoming events and broadcasts to all connected clients
+         * - Unsubscribes when connection closes
+         */
+        webSocket("{chatId}") {
+            val chatId = call.parameters["chatId"] ?: return@webSocket
+
+            webSocketHandler.subscribe(chatId, this)
+
+            try {
+                for (message in incoming) {
+                    val event = WebSocketEvent(
+                        type = "message",
+                        data = message.data.toString(Charsets.UTF_8),
+                    )
+                    webSocketHandler.broadcast(chatId, event)
+                }
+            } finally {
+                webSocketHandler.unsubscribe(chatId, this)
+                close()
             }
         }
     }

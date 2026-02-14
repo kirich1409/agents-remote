@@ -6,6 +6,7 @@ import com.example.rcc.domain.usecase.CreateChatUseCase
 import com.example.rcc.domain.usecase.GetChatsUseCase
 import com.example.rcc.domain.usecase.SendMessageUseCase
 import com.example.rcc.features.chat.ChatHandler
+import com.example.rcc.features.chat.WebSocketHandler
 import org.koin.dsl.module
 
 /**
@@ -67,4 +68,13 @@ public val appModule =
                 sendMessageUseCase = get(),
             )
         }
+
+        /**
+         * Provides WebSocketHandler.
+         *
+         * Manages WebSocket connections and broadcasts events to connected clients.
+         * Maintains registry of active connections grouped by chat ID.
+         * Single instance shared across the application.
+         */
+        single { WebSocketHandler() }
     }
