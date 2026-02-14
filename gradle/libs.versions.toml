@@ -1,21 +1,18 @@
 [versions]
 # Gradle and Kotlin
-gradle = "8.6"
-kotlin = "2.1.0"
-agp = "8.2.2"
-ksp = "2.1.0-1.0.29"
+gradle = "8.14.4"
+kotlin = "2.3.10"
+agp = "8.7.3"
+ksp = "2.3.5"
 
 # Compose and UI
 compose = "1.10.1"
 composeCompiler = "1.5.11"
 
-# Kotlin Multiplatform
-multiplatform = "2.1.0"
-
 # Android
 android-minSdk = "24"
-android-targetSdk = "34"
-android-compileSdk = "34"
+android-targetSdk = "35"
+android-compileSdk = "35"
 
 # Coroutines
 coroutines = "1.10.2"
@@ -24,7 +21,7 @@ coroutines = "1.10.2"
 ktor = "3.4.0"
 
 # Serialization
-kotlinx-serialization = "1.6.3"
+kotlinx-serialization = "1.10.0"
 kotlinx-datetime = "0.7.1-0.6.x-compat"
 
 # Architecture
@@ -33,7 +30,7 @@ decompose = "2.2.2"
 essenty = "2.5.0"
 
 # Database
-sqldelight = "2.0.2"
+sqldelight = "2.2.1"
 
 # DI
 koin = "3.5.6"

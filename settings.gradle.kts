@@ -20,4 +20,4 @@ rootProject.name = "remote-cloud-code"
 
 include(":shared")
 include(":backend")
-include(":app")
+// include(":app")  // Временно отключён - будет исправлен в Phase 4
