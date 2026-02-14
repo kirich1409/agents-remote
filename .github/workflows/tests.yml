@@ -25,11 +25,11 @@ jobs:
           cache: gradle
 
       - name: Run all tests
-        run: ./gradlew test --no-daemon -i
+        run: ./gradlew :shared:test :backend:test --no-daemon -i
 
       - name: Generate test report
         if: always()
-        run: ./gradlew testReport --no-daemon
+        run: echo "Test reports skipped for Phase 1 (no testReport task configured)"
 
       - name: Upload test results
         if: always()

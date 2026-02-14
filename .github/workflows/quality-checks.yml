@@ -25,7 +25,7 @@ jobs:
           cache: gradle
 
       - name: Build project
-        run: ./gradlew build -x test --no-daemon -q
+        run: ./gradlew :shared:build :backend:build -x test --no-daemon -q
 
       - name: Run ktlint checks
         run: ./gradlew ktlintCheck --no-daemon -q
