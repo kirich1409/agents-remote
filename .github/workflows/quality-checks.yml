@@ -30,7 +30,7 @@ jobs:
           cache: gradle
 
       - name: Setup Android SDK
-        uses: android-actions/setup-android@v4
+        uses: android-actions/setup-android@v3
 
       - name: Build project
         run: ./gradlew :shared:build :backend:build -x test --no-daemon -q
