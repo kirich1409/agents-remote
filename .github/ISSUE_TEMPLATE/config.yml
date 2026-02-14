@@ -1,0 +1,13 @@
+blank_issues_enabled: false
+contact_links:
+  - name: 💬 Вопрос или обсуждение
+    url: https://github.com/kirich1409/agents-remote/discussions
+    about: Задайте вопрос в Discussions
+
+  - name: 📚 Документация
+    url: https://github.com/kirich1409/agents-remote/tree/main/docs
+    about: Ознакомьтесь с документацией
+
+  - name: 🔒 Security Issue
+    url: https://github.com/kirich1409/agents-remote/security/advisories/new
+    about: Сообщите о проблеме безопасности (приватно)
