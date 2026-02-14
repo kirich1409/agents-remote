@@ -4,7 +4,8 @@ COPY . .
 RUN gradle :backend:build -x test --no-daemon
 
 FROM eclipse-temurin:21-jre-alpine
+RUN apk add --no-cache curl
 WORKDIR /app
-COPY --from=builder /app/backend/build/libs/*.jar app.jar
+COPY --from=builder /app/backend/build/libs/backend.jar app.jar
 EXPOSE 3000
 CMD ["java", "-jar", "app.jar"]
