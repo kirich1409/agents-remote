@@ -27,17 +27,37 @@ allprojects {
         }
     }
 
-    // Quality gates configuration
-    tasks.register("codeQualityCheck") {
-        dependsOn(":shared:lintKotlin")
-        dependsOn(":backend:lintKotlin")
-        dependsOn(":backend:detekt")
-        dependsOn(":shared:detekt")
-        description = "Run all code quality checks"
-    }
-
     // Ensure tests include quality checks
     tasks.withType<Test> {
-        finalizedBy("codeQualityCheck")
+        finalizedBy(rootProject.tasks.named("codeQualityCheck"))
     }
+}
+
+// Root-level task aliases for pre-commit hooks
+tasks.register("ktlintFormat") {
+    dependsOn(":shared:formatKotlin")
+    dependsOn(":backend:formatKotlin")
+    dependsOn(":app:formatKotlin")
+    description = "Format all Kotlin source files"
+}
+
+tasks.register("ktlintCheck") {
+    dependsOn(":shared:lintKotlin")
+    dependsOn(":backend:lintKotlin")
+    dependsOn(":app:lintKotlin")
+    description = "Check all Kotlin source files for style violations"
+}
+
+tasks.register("detekt") {
+    dependsOn(":shared:detekt")
+    dependsOn(":backend:detekt")
+    dependsOn(":app:detekt")
+    description = "Run detekt static analysis on all modules"
+}
+
+// Root quality check aggregation
+tasks.register("codeQualityCheck") {
+    dependsOn("ktlintCheck")
+    dependsOn("detekt")
+    description = "Run all code quality checks"
 }

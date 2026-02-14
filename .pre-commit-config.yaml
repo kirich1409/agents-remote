@@ -5,27 +5,42 @@
 repos:
   - repo: local
     hooks:
-      - id: formatKotlin
+      - id: ktlint-format
         name: ktlint (format)
-        entry: ./gradlew formatKotlin
+        entry: ./gradlew ktlintFormat
         language: system
         pass_filenames: false
-        stages: [pre-commit]
-        always_run: true
+        stages: [commit]
 
-      - id: lintKotlin
+      - id: ktlint-check
         name: ktlint (check)
-        entry: ./gradlew lintKotlin
+        entry: ./gradlew ktlintCheck
         language: system
         pass_filenames: false
-        stages: [pre-commit]
+        stages: [commit]
 
-      - id: detekt
+      - id: detekt-quick
         name: detekt (quick analysis)
         entry: ./gradlew detekt
         language: system
         pass_filenames: false
-        stages: [pre-commit]
+        stages: [commit]
+        timeout: 120
+
+      - id: build-check
+        name: build (verify compilation)
+        entry: ./gradlew :shared:build :backend:build -x test -x check
+        language: system
+        pass_filenames: false
+        stages: [commit]
+
+      - id: unit-tests-fast
+        name: unit tests (fast)
+        entry: ./gradlew :shared:test :backend:test
+        language: system
+        pass_filenames: false
+        stages: [commit]
+        timeout: 300
 
 # Total time: ~3 minutes
 # If any hook fails: git commit is blocked
