@@ -1,0 +1,42 @@
+-- Database schema for Remote Cloud Code
+
+CREATE TABLE IF NOT EXISTS chats (
+    id TEXT PRIMARY KEY,
+    session_id TEXT NOT NULL UNIQUE,
+    created_at INTEGER NOT NULL,
+    last_activity INTEGER NOT NULL,
+    title TEXT NOT NULL DEFAULT 'Chat'
+);
+
+CREATE TABLE IF NOT EXISTS messages (
+    id TEXT PRIMARY KEY,
+    chat_id TEXT NOT NULL,
+    role TEXT NOT NULL,
+    content TEXT NOT NULL,
+    timestamp INTEGER NOT NULL,
+    FOREIGN KEY(chat_id) REFERENCES chats(id) ON DELETE CASCADE
+);
+
+CREATE INDEX IF NOT EXISTS idx_messages_chat_id ON messages(chat_id);
+CREATE INDEX IF NOT EXISTS idx_messages_timestamp ON messages(timestamp);
+
+-- Queries
+selectAllChats:
+SELECT * FROM chats ORDER BY last_activity DESC;
+
+selectChatById:
+SELECT * FROM chats WHERE id = ?;
+
+insertChat:
+INSERT OR REPLACE INTO chats(id, session_id, created_at, last_activity, title)
+VALUES (?, ?, ?, ?, ?);
+
+deleteChat:
+DELETE FROM chats WHERE id = ?;
+
+selectMessagesByChatId:
+SELECT * FROM messages WHERE chat_id = ? ORDER BY timestamp DESC LIMIT ? OFFSET ?;
+
+insertMessage:
+INSERT OR REPLACE INTO messages(id, chat_id, role, content, timestamp)
+VALUES (?, ?, ?, ?, ?);
