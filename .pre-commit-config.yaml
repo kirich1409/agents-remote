@@ -1,0 +1,47 @@
+# .pre-commit-config.yaml
+# Local pre-commit hooks - run BEFORE each commit
+# Purpose: Catch issues early, prevent broken commits
+
+repos:
+  - repo: local
+    hooks:
+      - id: ktlint-format
+        name: ktlint (format)
+        entry: ./gradlew ktlintFormat
+        language: system
+        pass_filenames: false
+        stages: [commit]
+
+      - id: ktlint-check
+        name: ktlint (check)
+        entry: ./gradlew ktlintCheck
+        language: system
+        pass_filenames: false
+        stages: [commit]
+
+      - id: detekt-quick
+        name: detekt (quick analysis)
+        entry: ./gradlew detekt
+        language: system
+        pass_filenames: false
+        stages: [commit]
+        timeout: 120
+
+      - id: build-check
+        name: build (verify compilation)
+        entry: ./gradlew :shared:build :backend:build -x test -x check
+        language: system
+        pass_filenames: false
+        stages: [commit]
+
+      - id: unit-tests-fast
+        name: unit tests (fast)
+        entry: ./gradlew :shared:test :backend:test
+        language: system
+        pass_filenames: false
+        stages: [commit]
+        timeout: 300
+
+# Total time: ~3 minutes
+# If any hook fails: git commit is blocked
+# Developer must fix and retry

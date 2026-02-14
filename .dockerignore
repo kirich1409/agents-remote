@@ -1,0 +1,10 @@
+.git/
+.gradle/
+build/
+.idea/
+*.iml
+.DS_Store
+.env
+.worktrees/
+*.log
+node_modules/
