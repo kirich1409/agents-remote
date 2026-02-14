@@ -1,0 +1,22 @@
+# .github/CODEOWNERS
+# This file defines code ownership and review requirements
+
+# ⚠️ IMPORTANT: Replace YOUR_GITHUB_USERNAME with your actual GitHub username
+# Example: @krozov
+
+# Backend (require review)
+/backend/ @krozov
+/shared/ @krozov
+
+# Configuration (require review)
+/.github/ @krozov
+/gradle* @krozov
+build.gradle.kts @krozov
+settings.gradle.kts @krozov
+
+# Documentation
+/docs/ @krozov
+README.md @krozov
+
+# Default (require review)
+* @krozov
