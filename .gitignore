@@ -12,6 +12,9 @@
 build/
 .gradle/
 dist/
+gradle-wrapper.jar
+.gradle-wrapper/
+*.swp
 
 # OS
 .DS_Store
