@@ -44,7 +44,7 @@ jobs:
           path: build/reports/
 
       - name: Comment on PR - Test Results
-        if: always()
+        if: github.event_name == 'pull_request'
         uses: actions/github-script@v7
         with:
           script: |
