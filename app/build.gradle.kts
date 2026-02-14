@@ -1,9 +1,9 @@
 plugins {
     kotlin("multiplatform")
+    id("com.android.kotlin.multiplatform.library")
     kotlin("plugin.serialization")
     kotlin("plugin.compose")
     id("org.jetbrains.compose")
-    id("com.android.application")
     id("com.google.devtools.ksp")
     id("io.gitlab.arturbosch.detekt")
     id("org.jmailen.kotlinter")
@@ -12,7 +12,15 @@ plugins {
 kotlin {
     jvmToolchain(21)
 
-    androidTarget()
+    androidLibrary {
+        namespace = "com.example.rcc.app"
+        compileSdk = 36
+        minSdk = 24
+        androidResources {
+            enable = true
+        }
+    }
+
     jvm("desktop")
     // iOS targets временно отключены (SQLDelight несовместим с Kotlin 2.3.10)
     // iosArm64()
@@ -22,42 +30,36 @@ kotlin {
     explicitApi()
 
     sourceSets {
-        val commonMain by getting {
-            dependencies {
-                implementation(project(":shared"))
+        commonMain.dependencies {
+            implementation(project(":shared"))
 
-                implementation(libs.bundles.compose)
-                implementation(libs.decompose)
-                implementation(libs.decompose.compose)
-                implementation(libs.bundles.mvikotlin)
-                implementation(libs.essenty.lifecycle)
-                implementation(libs.koin.core)
-                implementation(libs.koin.compose)
-                implementation(libs.napier)
-                implementation(libs.kotlinx.serialization.json)
-                implementation(libs.sqldelight.runtime)
-                implementation(libs.bundles.ktor.client)
-            }
+            implementation(compose.ui)
+            implementation(compose.foundation)
+            implementation(compose.material3)
+            implementation(compose.runtime)
+            implementation(libs.decompose)
+            implementation(libs.decompose.compose)
+            implementation(libs.bundles.mvikotlin)
+            implementation(libs.essenty.lifecycle)
+            implementation(libs.koin.core)
+            implementation(libs.koin.compose)
+            implementation(libs.napier)
+            implementation(libs.kotlinx.serialization.json)
+            implementation(libs.sqldelight.runtime)
+            implementation(libs.bundles.ktor.client)
         }
 
-        val commonTest by getting {
-            dependencies {
-                implementation(libs.kotlin.test)
-            }
+        commonTest.dependencies {
+            implementation(libs.kotlin.test)
         }
 
-        val androidMain by getting {
-            dependencies {
-                implementation(libs.sqldelight.android.driver)
-                implementation(libs.ktor.client.okhttp)
-                implementation(libs.androidx.activity.compose)
-            }
+        androidMain.dependencies {
+            implementation(libs.sqldelight.android.driver)
+            implementation(libs.ktor.client.okhttp)
         }
 
-        val desktopMain by getting {
-            dependencies {
-                implementation(libs.sqldelight.sqlite.driver)
-            }
+        getByName("desktopMain").dependencies {
+            implementation(libs.sqldelight.sqlite.driver)
         }
     }
 }
@@ -65,30 +67,6 @@ kotlin {
 detekt {
     config.setFrom(files("${rootProject.projectDir}/detekt.yml"))
     baseline = file("${rootProject.projectDir}/detekt-baseline.xml")
-}
-
-android {
-    namespace = "com.example.rcc"
-    compileSdk = 34
-
-    defaultConfig {
-        applicationId = "com.example.rcc"
-        minSdk = 24
-        targetSdk = 34
-        versionCode = 1
-        versionName = "1.0.0"
-    }
-
-    buildTypes {
-        release {
-            isMinifyEnabled = false
-        }
-    }
-
-    compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_21
-        targetCompatibility = JavaVersion.VERSION_21
-    }
 }
 
 compose.desktop {
