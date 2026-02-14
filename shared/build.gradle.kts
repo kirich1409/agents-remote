@@ -1,6 +1,6 @@
 plugins {
     kotlin("multiplatform")
-    id("com.android.library")
+    id("com.android.kotlin.multiplatform.library")
     kotlin("plugin.serialization")
     id("com.google.devtools.ksp")
     id("app.cash.sqldelight")
@@ -11,7 +11,12 @@ plugins {
 kotlin {
     jvmToolchain(21)
 
-    androidTarget()
+    androidLibrary {
+        namespace = "com.example.rcc.shared"
+        compileSdk = 36
+        minSdk = 24
+    }
+
     jvm("backend")
     // iOS targets временно отключены: SQLDelight 2.2.1 несовместим с Kotlin 2.3.10
     // TODO: Включить когда выйдет совместимая версия SQLDelight
@@ -22,47 +27,37 @@ kotlin {
     explicitApi()
 
     sourceSets {
-        val commonMain by getting {
-            dependencies {
-                implementation(libs.kotlin.stdlib)
-                implementation(libs.kotlinx.coroutines.core)
-                implementation(libs.kotlinx.serialization.json)
-                implementation(libs.kotlinx.datetime)
-                implementation(libs.sqldelight.runtime)
-                implementation(libs.koin.core)
-                implementation(libs.napier)
-                implementation(libs.ktor.client.core)
-                implementation(libs.ktor.client.websockets)
-            }
+        commonMain.dependencies {
+            implementation(libs.kotlin.stdlib)
+            implementation(libs.kotlinx.coroutines.core)
+            implementation(libs.kotlinx.serialization.json)
+            implementation(libs.kotlinx.datetime)
+            implementation(libs.sqldelight.runtime)
+            implementation(libs.koin.core)
+            implementation(libs.napier)
+            implementation(libs.ktor.client.core)
+            implementation(libs.ktor.client.websockets)
         }
 
-        val commonTest by getting {
-            dependencies {
-                implementation(libs.kotlin.test)
-                implementation(libs.kotest.assertions)
-                implementation(libs.mockk)
-            }
+        commonTest.dependencies {
+            implementation(libs.kotlin.test)
+            implementation(libs.kotest.assertions)
+            implementation(libs.mockk)
         }
 
-        val androidMain by getting {
-            dependencies {
-                implementation(libs.sqldelight.android.driver)
-                implementation(libs.ktor.client.okhttp)
-            }
+        androidMain.dependencies {
+            implementation(libs.sqldelight.android.driver)
+            implementation(libs.ktor.client.okhttp)
         }
 
-        val backendMain by getting {
-            dependencies {
-                implementation(libs.sqldelight.jdbc.driver)
-            }
+        getByName("backendMain").dependencies {
+            implementation(libs.sqldelight.jdbc.driver)
         }
 
         // iOS source set временно отключён
-        // val iosMain by creating {
-        //     dependencies {
-        //         implementation(libs.sqldelight.native.driver)
-        //         implementation(libs.ktor.client.darwin)
-        //     }
+        // iosMain.dependencies {
+        //     implementation(libs.sqldelight.native.driver)
+        //     implementation(libs.ktor.client.darwin)
         // }
     }
 }
@@ -79,15 +74,6 @@ sqldelight {
 detekt {
     config.setFrom(files("${rootProject.projectDir}/detekt.yml"))
     baseline = file("${rootProject.projectDir}/detekt-baseline.xml")
-}
-
-android {
-    namespace = "com.example.rcc.shared"
-    compileSdk = 35
-
-    defaultConfig {
-        minSdk = 24
-    }
 }
 
 // Linting tasks
