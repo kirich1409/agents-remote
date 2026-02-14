@@ -49,7 +49,7 @@ kotlin {
             dependencies {
                 implementation(libs.sqldelight.android.driver)
                 implementation(libs.ktor.client.okhttp)
-                implementation("androidx.activity:activity-compose:1.8.1")
+                implementation(libs.androidx.activity.compose)
             }
         }
 
