@@ -18,7 +18,7 @@ android-targetSdk = "34"
 android-compileSdk = "34"
 
 # Coroutines
-coroutines = "1.8.1"
+coroutines = "1.10.2"
 
 # Networking
 ktor = "3.4.0"
