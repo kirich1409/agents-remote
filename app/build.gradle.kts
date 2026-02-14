@@ -14,8 +14,9 @@ kotlin {
 
     androidTarget()
     jvm("desktop")
-    iosArm64()
-    iosSimulatorArm64()
+    // iOS targets временно отключены (SQLDelight несовместим с Kotlin 2.3.10)
+    // iosArm64()
+    // iosSimulatorArm64()
 
     // Strict explicit API mode for all targets
     explicitApi()

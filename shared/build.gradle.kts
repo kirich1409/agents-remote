@@ -13,8 +13,10 @@ kotlin {
 
     androidTarget()
     jvm("backend")
-    iosArm64()
-    iosSimulatorArm64()
+    // iOS targets временно отключены: SQLDelight 2.2.1 несовместим с Kotlin 2.3.10
+    // TODO: Включить когда выйдет совместимая версия SQLDelight
+    // iosArm64()
+    // iosSimulatorArm64()
 
     // Strict explicit API mode for all targets
     explicitApi()
@@ -55,12 +57,13 @@ kotlin {
             }
         }
 
-        val iosMain by creating {
-            dependencies {
-                implementation(libs.sqldelight.native.driver)
-                implementation(libs.ktor.client.darwin)
-            }
-        }
+        // iOS source set временно отключён
+        // val iosMain by creating {
+        //     dependencies {
+        //         implementation(libs.sqldelight.native.driver)
+        //         implementation(libs.ktor.client.darwin)
+        //     }
+        // }
     }
 }
 
@@ -80,7 +83,11 @@ detekt {
 
 android {
     namespace = "com.example.rcc.shared"
-    compileSdk = 34
+    compileSdk = 35
+
+    defaultConfig {
+        minSdk = 24
+    }
 }
 
 // Linting tasks
