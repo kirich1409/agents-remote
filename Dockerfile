@@ -1,4 +1,4 @@
-FROM gradle:8.6-jdk21 as builder
+FROM gradle:9.3-jdk21 as builder
 WORKDIR /app
 COPY . .
 RUN gradle :backend:build -x test --no-daemon
