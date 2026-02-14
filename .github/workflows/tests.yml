@@ -29,8 +29,11 @@ jobs:
           distribution: 'temurin'
           cache: gradle
 
+      - name: Setup Android SDK
+        uses: android-actions/setup-android@v4
+
       - name: Run all tests
-        run: ./gradlew :shared:test :backend:test --no-daemon -i
+        run: ./gradlew :shared:allTests :backend:test --no-daemon -i
 
       - name: Generate test report
         if: always()

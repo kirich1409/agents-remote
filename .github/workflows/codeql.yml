@@ -47,9 +47,12 @@ jobs:
               - '**/.gradle/**'
               - '**/test/**'
 
+      - name: Setup Android SDK
+        uses: android-actions/setup-android@v4
+
       - name: Build project for analysis
         run: |
-          ./gradlew :shared:compileKotlinBackend :backend:compileKotlin -x test --no-daemon
+          ./gradlew :shared:compileKotlinBackend :shared:compileAndroidMain :backend:compileKotlin -x test --no-daemon
 
       - name: Perform CodeQL Analysis
         uses: github/codeql-action/analyze@v3
