@@ -28,8 +28,6 @@ COPY --from=builder /app/backend/build/libs/backend-all.jar app.jar
 # Create data directory for SQLite volume
 RUN mkdir -p /app/data
 
-ENV CLAUDE_PATH=claude
-
 EXPOSE 8080
 
 HEALTHCHECK --interval=30s --timeout=10s --retries=3 \

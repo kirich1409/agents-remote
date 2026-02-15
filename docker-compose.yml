@@ -4,11 +4,10 @@ services:
       context: .
       dockerfile: Dockerfile
     container_name: rcc-gateway
-    env_file: .env
     ports:
       - "${GATEWAY_PORT:-8080}:${GATEWAY_PORT:-8080}"
     environment:
-      - AUTH_TOKEN=${AUTH_TOKEN}
+      - AUTH_TOKEN=${AUTH_TOKEN:-}
       - GATEWAY_PORT=${GATEWAY_PORT:-8080}
       - ANTHROPIC_API_KEY=${ANTHROPIC_API_KEY:-}
       - CLAUDE_CODE_OAUTH_TOKEN=${CLAUDE_CODE_OAUTH_TOKEN:-}
