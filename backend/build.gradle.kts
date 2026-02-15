@@ -25,6 +25,9 @@ dependencies {
     // Testing
     testImplementation(libs.kotlin.test)
     testImplementation(libs.ktor.server.test.host)
+    testImplementation(libs.ktor.client.content.negotiation)
+    testImplementation(libs.ktor.client.websockets)
+    testImplementation(libs.ktor.serialization.kotlinx.json)
     testImplementation(libs.kotest.assertions)
     testImplementation(libs.mockk)
     testImplementation(libs.kotlinx.coroutines.test)
