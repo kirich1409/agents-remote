@@ -36,8 +36,6 @@ kotlin {
         val commonTest by getting {
             dependencies {
                 implementation(libs.kotlin.test)
-                implementation(libs.kotest.assertions)
-                implementation(libs.mockk)
             }
         }
 
@@ -51,6 +49,20 @@ kotlin {
         val backendMain by getting {
             dependencies {
                 implementation(libs.sqldelight.sqlite.driver)
+            }
+        }
+
+        val backendTest by getting {
+            dependencies {
+                implementation(libs.kotest.assertions)
+                implementation(libs.mockk)
+            }
+        }
+
+        val androidUnitTest by getting {
+            dependencies {
+                implementation(libs.kotest.assertions)
+                implementation(libs.mockk)
             }
         }
 
