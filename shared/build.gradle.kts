@@ -15,15 +15,13 @@ kotlin {
     iosArm64()
     iosSimulatorArm64()
 
-    // Strict explicit API mode for all targets
-    explicitApi()
-
+    // Strict explicit API mode for main source sets only
     targets.configureEach {
         compilations.configureEach {
-            if (name == "test") {
+            if (name == "main") {
                 compileTaskProvider.configure {
                     compilerOptions {
-                        freeCompilerArgs.add("-Xno-explicit-api")
+                        freeCompilerArgs.add("-Xexplicit-api=strict")
                     }
                 }
             }
