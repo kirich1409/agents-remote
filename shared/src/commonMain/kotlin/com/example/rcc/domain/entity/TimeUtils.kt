@@ -1,6 +1,6 @@
 package com.example.rcc.domain.entity
 
-import kotlinx.datetime.Clock
+import kotlin.time.Clock
 
 /**
  * Returns current time in milliseconds since epoch.
