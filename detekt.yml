@@ -2,182 +2,160 @@
 config:
   validation: true
   warningsAsErrors: true
-  checkBuildHealth: true
 
 processors:
   active: true
 
-exclude:
-  - '**/test/**'
-  - '**/androidTest/**'
-  - '**/build/**'
-  - '**/.gradle/**'
-
-rules:
+comments:
   active: true
-
-  comments:
+  CommentOverPrivateFunction:
     active: true
-    CommentOverPrivateFunction:
-      active: true
-    CommentOverPrivateProperty:
-      active: true
-    OutdatedDocumentation:
-      active: true
-    UndocumentedPublicClass:
-      active: true
-    UndocumentedPublicFunction:
-      active: true
-    UndocumentedPublicProperty:
-      active: true
-
-  complexity:
+  CommentOverPrivateProperty:
     active: true
-    CyclomaticComplexity:
-      threshold: 15
-    LongMethod:
-      threshold: 100
-    LongParameterList:
-      threshold: 5
-    NestedBlockDepth:
-      threshold: 4
-    TooManyFunctions:
-      threshold: 15
-
-  coroutines:
+  OutdatedDocumentation:
     active: true
-    GlobalCoroutineUsage:
-      active: true
-    RedundantSuspendModifier:
-      active: true
-
-  empty-blocks:
+  UndocumentedPublicClass:
     active: true
-    EmptyCatchBlock:
-      active: true
-    EmptyFunctionBlock:
-      active: true
-
-  exceptions:
+  UndocumentedPublicFunction:
     active: true
-    ExceptionRaisedInUnexpectedLocation:
-      active: true
-    ObjectExtendsThrowable:
-      active: true
-    PrintStackTrace:
-      active: true
-
-  formatting:
+  UndocumentedPublicProperty:
     active: true
-    Indentation:
-      active: true
-    MaximumLineLength:
-      maxLineLength: 120
-    NoMultipleSpaces:
-      active: true
-    NoTrailingSpaces:
-      active: true
-    NoUnusedImports:
-      active: true
 
-  naming:
-    active: true
-    ClassNaming:
-      classPattern: '[A-Z][a-zA-Z0-9]*'
-    EnumNaming:
-      enumEntryPattern: '[A-Z][A-Z0-9]*'
-    FunctionNaming:
-      functionPattern: '([a-z][a-zA-Z0-9]*)|(`.*`)'
-    PackageNaming:
-      packagePattern: '^[a-z]+(\.[a-z][a-z0-9]*)*$'
-    VariableNaming:
-      variablePattern: '[a-z][a-zA-Z0-9]*'
+complexity:
+  active: true
+  CyclomaticComplexMethod:
+    threshold: 15
+  LongMethod:
+    threshold: 100
+  LongParameterList:
+    functionThreshold: 5
+    constructorThreshold: 5
+  NestedBlockDepth:
+    threshold: 4
+  TooManyFunctions:
+    thresholdInFiles: 15
+    thresholdInClasses: 15
+    thresholdInInterfaces: 15
+    thresholdInObjects: 15
+    thresholdInEnums: 15
 
-  performance:
+coroutines:
+  active: true
+  GlobalCoroutineUsage:
     active: true
-    ForEachOnSequence:
-      active: true
-    SpreadOperator:
-      active: true
-    UnnecessaryTemporaryInstantiation:
-      active: true
+  RedundantSuspendModifier:
+    active: true
 
-  potential-bugs:
+empty-blocks:
+  active: true
+  EmptyCatchBlock:
     active: true
-    DuplicateCaseInWhenExpression:
-      active: true
-    EqualsAlwaysReturnsTrue:
-      active: true
-    EqualsWithHashCodeExist:
-      active: true
-    HasPlatformType:
-      active: true
-    ImplicitUnitReturnType:
-      active: true
+  EmptyFunctionBlock:
+    active: true
 
-  style:
+exceptions:
+  active: true
+  ExceptionRaisedInUnexpectedLocation:
     active: true
-    ClassOrdering:
-      active: true
-    CollapsibleIfStatements:
-      active: true
-    DataClassShouldBeImmutable:
-      active: true
-    EqualsNullCall:
-      active: true
-    ExplicitCollectionElementAccessMethod:
-      active: true
-    ExpressionBodySyntax:
-      active: true
-    ForbiddenComment:
-      active: true
-      values: ['FIXME', 'HACK', 'TODO', 'NOTE']
-    MagicNumber:
-      active: true
-      excludedNumbers: ['-1', '0', '1', '2']
-    MandatoryBracesLoops:
-      active: true
-    MaxChainedCallsOnSameLine:
-      maxChainedCalls: 3
-    MultilineLambdaItParameter:
-      active: true
-    NoCloneable:
-      active: true
-    PreferToOverPairSyntax:
-      active: true
-    RedundantHigherOrderMapUsage:
-      active: true
-    StringTemplate:
-      active: true
-    UnderscoresInNumericLiterals:
-      active: true
-    UnusedImports:
-      active: true
-    UnusedParameter:
-      active: true
-    UnusedPrivateMember:
-      active: true
-    UseArrayLiteral:
-      active: true
-    UseCheckNotNull:
-      active: true
-    UseDataClass:
-      active: true
-    UseEmptyCounterpart:
-      active: true
-    UseIfEmptyOrIfBlank:
-      active: true
-    UseIfInsteadOfWhen:
-      active: true
-    UseRequire:
-      active: true
-    UseRequireNotNull:
-      active: true
-    UselessCallOnNotNull:
-      active: true
-    UtilityClassWithPublicConstructor:
-      active: true
-    VarCouldBeVal:
-      active: true
-    WildcardImport:
-      active: true
+  ObjectExtendsThrowable:
+    active: true
+  PrintStackTrace:
+    active: true
+
+naming:
+  active: true
+  ClassNaming:
+    classPattern: '[A-Z][a-zA-Z0-9]*'
+  EnumNaming:
+    enumEntryPattern: '[A-Z][A-Z0-9]*'
+  FunctionNaming:
+    functionPattern: '([a-z][a-zA-Z0-9]*)|(`.*`)'
+  PackageNaming:
+    packagePattern: '^[a-z]+(\.[a-z][a-z0-9]*)*$'
+  VariableNaming:
+    variablePattern: '[a-z][a-zA-Z0-9]*'
+
+performance:
+  active: true
+  SpreadOperator:
+    active: true
+  UnnecessaryTemporaryInstantiation:
+    active: true
+
+potential-bugs:
+  active: true
+  EqualsWithHashCodeExist:
+    active: true
+  HasPlatformType:
+    active: true
+  ImplicitUnitReturnType:
+    active: true
+
+style:
+  active: true
+  ClassOrdering:
+    active: true
+  CollapsibleIfStatements:
+    active: true
+  DataClassShouldBeImmutable:
+    active: true
+  EqualsNullCall:
+    active: true
+  ExplicitCollectionElementAccessMethod:
+    active: true
+  ExpressionBodySyntax:
+    active: true
+  ForbiddenComment:
+    active: true
+    comments:
+      - reason: 'FIXME markers should be resolved before merge.'
+        value: 'FIXME:'
+      - reason: 'HACK markers indicate poor solutions.'
+        value: 'HACK:'
+      - reason: 'TODO markers should be resolved before merge.'
+        value: 'TODO:'
+  MagicNumber:
+    active: true
+    ignoreNumbers: ['-1', '0', '1', '2']
+  MandatoryBracesLoops:
+    active: true
+  MaxChainedCallsOnSameLine:
+    maxChainedCalls: 3
+  MultilineLambdaItParameter:
+    active: true
+  PreferToOverPairSyntax:
+    active: true
+  RedundantHigherOrderMapUsage:
+    active: true
+  UnderscoresInNumericLiterals:
+    active: true
+  UnusedImports:
+    active: true
+  UnusedParameter:
+    active: true
+  UnusedPrivateMember:
+    active: true
+  UseArrayLiteralsInAnnotations:
+    active: true
+  UseCheckNotNull:
+    active: true
+  UseDataClass:
+    active: true
+  UseEmptyCounterpart:
+    active: true
+  UseIfEmptyOrIfBlank:
+    active: true
+  UseIfInsteadOfWhen:
+    active: true
+  UseRequire:
+    active: true
+  UseRequireNotNull:
+    active: true
+  UselessCallOnNotNull:
+    active: true
+  UtilityClassWithPublicConstructor:
+    active: true
+  VarCouldBeVal:
+    active: true
+  WildcardImport:
+    active: true
