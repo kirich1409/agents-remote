@@ -10,8 +10,10 @@ import com.example.rcc.domain.usecase.SendMessageUseCase
 import com.example.rcc.features.chatdetail.store.ChatDetailStore.Intent
 import com.example.rcc.features.chatdetail.store.ChatDetailStore.State
 import kotlinx.coroutines.launch
+import org.koin.core.annotation.Single
 
 /** Factory that creates [ChatDetailStore] instances wired with repository and use cases. */
+@Single
 public class ChatDetailStoreFactory(
     private val storeFactory: StoreFactory,
     private val chatRepository: ChatRepository,

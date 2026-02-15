@@ -4,6 +4,7 @@ import com.example.rcc.config.AppConfig
 import io.github.aakira.napier.Napier
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.Json
+import org.koin.core.annotation.Single
 import java.io.File
 import java.util.concurrent.ConcurrentHashMap
 import java.util.concurrent.TimeUnit
@@ -19,6 +20,7 @@ private val json = Json { ignoreUnknownKeys = true }
  * Launches `claude` as a child process with `--session-id` / `--resume` to maintain
  * conversation context across messages within the same chat.
  */
+@Single
 public class ClaudeCodeService {
 
     private val claudePath: String = AppConfig.claudePath

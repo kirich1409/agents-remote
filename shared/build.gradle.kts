@@ -4,6 +4,7 @@ plugins {
     kotlin("plugin.serialization")
     id("com.google.devtools.ksp")
     id("app.cash.sqldelight")
+    alias(libs.plugins.koin.compiler)
     id("io.gitlab.arturbosch.detekt")
 }
 
@@ -22,6 +23,7 @@ kotlin {
                 implementation(libs.kotlinx.serialization.json)
                 implementation(libs.sqldelight.runtime)
                 implementation(libs.koin.core)
+                implementation(libs.koin.annotations)
                 implementation(libs.napier)
                 implementation(libs.ktor.client.core)
                 implementation(libs.ktor.client.websockets)

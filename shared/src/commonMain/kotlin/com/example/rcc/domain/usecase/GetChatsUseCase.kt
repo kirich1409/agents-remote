@@ -2,12 +2,14 @@ package com.example.rcc.domain.usecase
 
 import com.example.rcc.domain.entity.Chat
 import com.example.rcc.domain.repository.ChatRepository
+import org.koin.core.annotation.Single
 
 /**
  * Use case for retrieving all chats.
  *
  * @property repository Chat repository for data access.
  */
+@Single
 public class GetChatsUseCase(private val repository: ChatRepository) {
     /**
      * Retrieves all chats.
