@@ -45,15 +45,32 @@ public object ChatMapper {
      *
      * @param dto Data transfer object to convert.
      * @return Domain Message entity.
+     * @throws com.example.rcc.domain.error.ChatError.InvalidInput if role is invalid.
      */
     public fun messageToDomain(dto: MessageDto): Message =
         Message(
             id = dto.id,
             chatId = dto.chatId,
-            role = MessageRole.valueOf(dto.role),
+            role = parseMessageRole(dto.role),
             content = dto.content,
             timestamp = dto.timestamp,
         )
+
+    /**
+     * Parses message role string to enum.
+     *
+     * @param roleString Role string (case-insensitive).
+     * @return MessageRole enum.
+     * @throws com.example.rcc.domain.error.ChatError.InvalidInput if role is invalid.
+     */
+    private fun parseMessageRole(roleString: String): MessageRole =
+        try {
+            MessageRole.valueOf(roleString.uppercase())
+        } catch (e: IllegalArgumentException) {
+            throw com.example.rcc.domain.error.ChatError.InvalidInput(
+                "Invalid message role: '$roleString'. Expected one of: ${MessageRole.entries.joinToString()}",
+            )
+        }
 
     /**
      * Converts domain Message entity to MessageDto.

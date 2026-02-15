@@ -5,7 +5,15 @@ import app.cash.sqldelight.driver.jdbc.sqlite.JdbcSqliteDriver
 import com.example.rcc.database.RemoteCloudCodeDb
 
 /**
- * Creates JVM SQLite driver with in-memory database.
+ * Database name for persistent backend storage.
+ */
+private const val DATABASE_NAME = "rcc-backend.db"
+
+/**
+ * Creates JVM SQLite driver.
+ *
+ * Uses in-memory database by default for MVP.
+ * For production, switch to persistent storage: `jdbc:sqlite:$DATABASE_NAME`
  *
  * @return JVM-specific SQL driver.
  */

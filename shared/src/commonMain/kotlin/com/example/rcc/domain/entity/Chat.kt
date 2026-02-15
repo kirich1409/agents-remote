@@ -1,9 +1,8 @@
 package com.example.rcc.domain.entity
 
+import com.example.rcc.domain.util.UuidGenerator
 import kotlinx.datetime.Clock
 import kotlinx.serialization.Serializable
-import kotlin.uuid.ExperimentalUuidApi
-import kotlin.uuid.Uuid
 
 /**
  * Represents a chat session with Cloud Code.
@@ -16,7 +15,7 @@ import kotlin.uuid.Uuid
  */
 @Serializable
 public data class Chat(
-    val id: String = @OptIn(ExperimentalUuidApi::class) Uuid.random().toString(),
+    val id: String = UuidGenerator.randomUuid(),
     val sessionId: String,
     val createdAt: Long = Clock.System.now().toEpochMilliseconds(),
     val lastActivity: Long = Clock.System.now().toEpochMilliseconds(),

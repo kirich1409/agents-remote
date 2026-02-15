@@ -1,9 +1,8 @@
 package com.example.rcc.domain.entity
 
+import com.example.rcc.domain.util.UuidGenerator
 import kotlinx.datetime.Clock
 import kotlinx.serialization.Serializable
-import kotlin.uuid.ExperimentalUuidApi
-import kotlin.uuid.Uuid
 
 /**
  * Represents a message in a chat.
@@ -16,7 +15,7 @@ import kotlin.uuid.Uuid
  */
 @Serializable
 public data class Message(
-    val id: String = @OptIn(ExperimentalUuidApi::class) Uuid.random().toString(),
+    val id: String = UuidGenerator.randomUuid(),
     val chatId: String,
     val role: MessageRole,
     val content: String,

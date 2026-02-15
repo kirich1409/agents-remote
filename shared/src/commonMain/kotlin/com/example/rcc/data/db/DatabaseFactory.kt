@@ -13,18 +13,32 @@ public expect fun createDriver(): SqlDriver
 /**
  * Database instance factory.
  *
- * Provides singleton access to the database.
+ * Provides thread-safe singleton access to the database.
  */
 public object DatabaseFactory {
+    @Volatile
     private var instance: RemoteCloudCodeDb? = null
 
     /**
      * Gets or creates the database instance.
      *
+     * Thread-safe double-checked locking pattern.
+     *
      * @return Database instance.
      */
     public fun getInstance(): RemoteCloudCodeDb =
-        instance ?: RemoteCloudCodeDb(createDriver()).also {
-            instance = it
+        instance ?: synchronized(this) {
+            instance ?: RemoteCloudCodeDb(createDriver()).also { instance = it }
         }
+
+    /**
+     * Resets the database instance for testing purposes.
+     *
+     * **Warning**: Only use in tests. Not thread-safe with getInstance().
+     */
+    internal fun resetForTesting() {
+        synchronized(this) {
+            instance = null
+        }
+    }
 }
