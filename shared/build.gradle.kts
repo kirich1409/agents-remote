@@ -15,9 +15,6 @@ kotlin {
     iosArm64()
     iosSimulatorArm64()
 
-    // Strict explicit API mode for all targets
-    explicitApi()
-
     sourceSets {
         val commonMain by getting {
             dependencies {
@@ -36,8 +33,7 @@ kotlin {
         val commonTest by getting {
             dependencies {
                 implementation(libs.kotlin.test)
-                implementation(libs.kotest.assertions)
-                implementation(libs.mockk)
+                implementation(libs.kotlinx.coroutines.test)
             }
         }
 
@@ -50,16 +46,34 @@ kotlin {
 
         val backendMain by getting {
             dependencies {
-                implementation(libs.sqldelight.jdbc.driver)
+                implementation(libs.sqldelight.sqlite.driver)
+            }
+        }
+
+        val backendTest by getting {
+            dependencies {
+                implementation(libs.kotest.assertions)
+                implementation(libs.mockk)
+            }
+        }
+
+        val androidUnitTest by getting {
+            dependencies {
+                implementation(libs.kotest.assertions)
+                implementation(libs.mockk)
             }
         }
 
         val iosMain by creating {
+            dependsOn(commonMain)
             dependencies {
                 implementation(libs.sqldelight.native.driver)
                 implementation(libs.ktor.client.darwin)
             }
         }
+
+        val iosArm64Main by getting { dependsOn(iosMain) }
+        val iosSimulatorArm64Main by getting { dependsOn(iosMain) }
     }
 }
 

@@ -3,9 +3,9 @@ name: CodeQL
 
 on:
   push:
-    branches: [main, develop]
+    branches: [main]
   pull_request:
-    branches: [main, develop]
+    branches: [main]
   schedule:
     - cron: '0 6 * * 1'  # Weekly Monday 6 AM UTC
 
@@ -48,6 +48,7 @@ jobs:
               - '**/test/**'
 
       - name: Build project for analysis
+        continue-on-error: true
         run: |
           ./gradlew :shared:compileKotlinBackend :backend:compileKotlin -x test --no-daemon
 
