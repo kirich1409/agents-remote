@@ -1,7 +1,12 @@
 plugins {
     kotlin("jvm")
     kotlin("plugin.serialization")
+    id("io.ktor.plugin")
     id("io.gitlab.arturbosch.detekt")
+}
+
+application {
+    mainClass.set("com.example.rcc.ApplicationKt")
 }
 
 kotlin {

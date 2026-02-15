@@ -9,6 +9,7 @@ plugins {
     id("com.google.devtools.ksp") version "2.3.5" apply false
     id("app.cash.sqldelight") version "2.2.1" apply false
     id("io.gitlab.arturbosch.detekt") version "1.23.8" apply false
+    id("io.ktor.plugin") version "3.4.0" apply false
     id("com.diffplug.spotless") version "8.2.1"
 }
 
