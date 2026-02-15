@@ -6,5 +6,4 @@ import com.example.rcc.database.RemoteCloudCodeDb
 
 private const val DATABASE_NAME = "remote_cloud_code.db"
 
-public actual fun createDriver(): SqlDriver =
-    NativeSqliteDriver(RemoteCloudCodeDb.Schema, DATABASE_NAME)
+public actual fun createDriver(): SqlDriver = NativeSqliteDriver(RemoteCloudCodeDb.Schema, DATABASE_NAME)

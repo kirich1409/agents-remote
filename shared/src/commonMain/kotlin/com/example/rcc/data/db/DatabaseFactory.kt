@@ -23,8 +23,7 @@ public object DatabaseFactory {
      *
      * @return Database instance.
      */
-    public fun getInstance(): RemoteCloudCodeDb =
-        instance ?: RemoteCloudCodeDb(createDriver()).also { instance = it }
+    public fun getInstance(): RemoteCloudCodeDb = instance ?: RemoteCloudCodeDb(createDriver()).also { instance = it }
 
     /**
      * Resets the database instance for testing purposes.
