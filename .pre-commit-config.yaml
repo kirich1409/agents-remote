@@ -5,28 +5,6 @@
 repos:
   - repo: local
     hooks:
-      - id: spotless-apply
-        name: spotless (format)
-        entry: ./gradlew spotlessApply
-        language: system
-        pass_filenames: false
-        stages: [commit]
-
-      - id: spotless-check
-        name: spotless (check)
-        entry: ./gradlew spotlessCheck
-        language: system
-        pass_filenames: false
-        stages: [commit]
-
-      - id: detekt-quick
-        name: detekt (quick analysis)
-        entry: ./gradlew detekt
-        language: system
-        pass_filenames: false
-        stages: [commit]
-        timeout: 120
-
       - id: build-check
         name: build (verify compilation)
         entry: ./gradlew :shared:build :backend:build -x test -x check

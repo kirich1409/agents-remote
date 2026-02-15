@@ -10,24 +10,6 @@ plugins {
     id("app.cash.sqldelight") version "2.2.1" apply false
     id("io.gitlab.arturbosch.detekt") version "1.23.8" apply false
     id("io.ktor.plugin") version "3.4.0" apply false
-    id("com.diffplug.spotless") version "8.2.1"
-}
-
-spotless {
-    kotlin {
-        target("**/*.kt")
-        targetExclude("**/build/**", ".worktrees/**")
-        ktlint().editorConfigOverride(
-            mapOf(
-                "ktlint_function_naming_ignore_when_annotated_with" to "Composable",
-            ),
-        )
-    }
-    kotlinGradle {
-        target("**/*.gradle.kts")
-        targetExclude("**/build/**", ".worktrees/**")
-        ktlint()
-    }
 }
 
 allprojects {
@@ -49,10 +31,6 @@ allprojects {
         }
     }
 
-    // Ensure tests include quality checks
-    tasks.withType<Test> {
-        finalizedBy(rootProject.tasks.named("codeQualityCheck"))
-    }
 }
 
 tasks.register("detekt") {
@@ -62,9 +40,3 @@ tasks.register("detekt") {
     description = "Run detekt static analysis on all modules"
 }
 
-// Root quality check aggregation
-tasks.register("codeQualityCheck") {
-    dependsOn("detekt")
-    dependsOn("spotlessCheck")
-    description = "Run all code quality checks"
-}

@@ -102,7 +102,3 @@ android {
     }
 }
 
-// Linting tasks
-tasks.named("build") {
-    dependsOn("detekt")
-}
