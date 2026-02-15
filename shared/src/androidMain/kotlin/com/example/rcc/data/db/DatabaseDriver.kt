@@ -13,7 +13,7 @@ private const val DATABASE_NAME = "rcc.db"
 /**
  * Application context holder for Android database driver.
  */
-private var _appContext: Context? = null
+private var appContextHolder: Context? = null
 
 /**
  * Initializes Android database context.
@@ -23,7 +23,7 @@ private var _appContext: Context? = null
  * @param context Application context.
  */
 public fun initializeDatabaseContext(context: Context) {
-    _appContext = context.applicationContext
+    appContextHolder = context.applicationContext
 }
 
 /**
@@ -32,8 +32,8 @@ public fun initializeDatabaseContext(context: Context) {
  * @return Application context.
  * @throws IllegalStateException if context not initialized.
  */
-private val appContext: Context
-    get() = checkNotNull(_appContext) {
+private fun requireAppContext(): Context =
+    checkNotNull(appContextHolder) {
         "Database context not initialized. Call initializeDatabaseContext() first."
     }
 
@@ -44,4 +44,4 @@ private val appContext: Context
  * @throws IllegalStateException if context not initialized.
  */
 public actual fun createDriver(): SqlDriver =
-    AndroidSqliteDriver(RemoteCloudCodeDb.Schema, appContext, DATABASE_NAME)
+    AndroidSqliteDriver(RemoteCloudCodeDb.Schema, requireAppContext(), DATABASE_NAME)
