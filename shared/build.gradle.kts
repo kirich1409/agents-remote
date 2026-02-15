@@ -18,6 +18,18 @@ kotlin {
     // Strict explicit API mode for all targets
     explicitApi()
 
+    targets.configureEach {
+        compilations.configureEach {
+            if (name == "test") {
+                compileTaskProvider.configure {
+                    compilerOptions {
+                        freeCompilerArgs.add("-Xno-explicit-api")
+                    }
+                }
+            }
+        }
+    }
+
     sourceSets {
         val commonMain by getting {
             dependencies {
