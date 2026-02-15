@@ -17,7 +17,7 @@ import io.ktor.serialization.kotlinx.json.json
 import kotlinx.serialization.json.Json
 import org.koin.dsl.module
 
-private const val DEFAULT_BASE_URL = "http://10.0.2.2:3000"
+private const val DEFAULT_BASE_URL = "http://10.0.2.2:8080"
 private const val REQUEST_TIMEOUT_MS = 180_000L
 private const val CONNECT_TIMEOUT_MS = 10_000L
 private const val SOCKET_TIMEOUT_MS = 180_000L

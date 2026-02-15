@@ -66,10 +66,10 @@ public class ChatHandler(
         // 2. Call Claude CLI (use chatId as session ID — it's already a UUID)
         val response = claudeCodeService.sendMessage(chatId, content).getOrThrow()
 
-        // 4. Save assistant message
+        // 3. Save assistant message
         val assistantMessage = chatRepository.sendAssistantMessage(chatId, response).getOrThrow()
 
-        // 5. Broadcast via WebSocket
+        // 4. Broadcast via WebSocket
         val event = WebSocketEvent(type = "message", data = assistantMessage.content)
         try {
             webSocketHandler.broadcast(chatId, event)
@@ -77,7 +77,7 @@ public class ChatHandler(
             Napier.w("Failed to broadcast WebSocket event", e)
         }
 
-        // 6. Return assistant message
+        // 5. Return assistant message
         assistantMessage.toResponse()
     }
 
