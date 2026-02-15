@@ -28,6 +28,9 @@ class GetChatsUseCaseTest {
 
                 override suspend fun sendMessage(chatId: String, content: String) =
                     Result.failure<Message>(NotImplementedError())
+
+                override suspend fun sendAssistantMessage(chatId: String, content: String) =
+                    Result.failure<Message>(NotImplementedError())
             }
 
         val useCase = GetChatsUseCase(mockRepository)
@@ -54,6 +57,9 @@ class GetChatsUseCaseTest {
                     Result.failure<List<Message>>(NotImplementedError())
 
                 override suspend fun sendMessage(chatId: String, content: String) =
+                    Result.failure<Message>(NotImplementedError())
+
+                override suspend fun sendAssistantMessage(chatId: String, content: String) =
                     Result.failure<Message>(NotImplementedError())
             }
 
@@ -83,6 +89,9 @@ class CreateChatUseCaseTest {
 
                 override suspend fun sendMessage(chatId: String, content: String) =
                     Result.failure<Message>(NotImplementedError())
+
+                override suspend fun sendAssistantMessage(chatId: String, content: String) =
+                    Result.failure<Message>(NotImplementedError())
             }
 
         val useCase = CreateChatUseCase(mockRepository)
@@ -108,6 +117,9 @@ class CreateChatUseCaseTest {
                     Result.failure<List<Message>>(NotImplementedError())
 
                 override suspend fun sendMessage(chatId: String, content: String) =
+                    Result.failure<Message>(NotImplementedError())
+
+                override suspend fun sendAssistantMessage(chatId: String, content: String) =
                     Result.failure<Message>(NotImplementedError())
             }
 
@@ -136,6 +148,9 @@ class SendMessageUseCaseTest {
 
                 override suspend fun sendMessage(chatId: String, content: String) =
                     Result.failure<Message>(NotImplementedError())
+
+                override suspend fun sendAssistantMessage(chatId: String, content: String) =
+                    Result.failure<Message>(NotImplementedError())
             }
 
         val useCase = SendMessageUseCase(mockRepository)
@@ -160,6 +175,9 @@ class SendMessageUseCaseTest {
                     Result.failure<List<Message>>(NotImplementedError())
 
                 override suspend fun sendMessage(chatId: String, content: String) =
+                    Result.failure<Message>(NotImplementedError())
+
+                override suspend fun sendAssistantMessage(chatId: String, content: String) =
                     Result.failure<Message>(NotImplementedError())
             }
 
@@ -191,6 +209,9 @@ class SendMessageUseCaseTest {
                     Result.failure<List<Message>>(NotImplementedError())
 
                 override suspend fun sendMessage(chatId: String, content: String) = Result.success(expectedMessage)
+
+                override suspend fun sendAssistantMessage(chatId: String, content: String) =
+                    Result.failure<Message>(NotImplementedError())
             }
 
         val useCase = SendMessageUseCase(mockRepository)

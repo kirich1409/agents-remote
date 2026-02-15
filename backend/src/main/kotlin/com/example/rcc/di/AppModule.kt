@@ -7,6 +7,7 @@ import com.example.rcc.domain.usecase.GetChatsUseCase
 import com.example.rcc.domain.usecase.SendMessageUseCase
 import com.example.rcc.features.chat.ChatHandler
 import com.example.rcc.features.chat.WebSocketHandler
+import com.example.rcc.service.ClaudeCodeService
 import org.koin.dsl.module
 
 /**
@@ -27,12 +28,18 @@ public val appModule: org.koin.core.module.Module =
         single { CreateChatUseCase(get()) }
         single { SendMessageUseCase(get()) }
 
+        // Service bindings
+        single { ClaudeCodeService() }
+
         // Handler bindings
         single {
             ChatHandler(
+                chatRepository = get(),
                 getChatsUseCase = get(),
                 createChatUseCase = get(),
                 sendMessageUseCase = get(),
+                claudeCodeService = get(),
+                webSocketHandler = get(),
             )
         }
         single { WebSocketHandler() }

@@ -1,5 +1,6 @@
 package com.example.rcc.features.chatdetail.ui
 
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
@@ -11,9 +12,11 @@ import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.automirrored.filled.Send
+import androidx.compose.material.icons.filled.ChatBubbleOutline
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -57,13 +60,39 @@ internal fun ChatDetailScreen(component: ChatDetailComponent, modifier: Modifier
                 .fillMaxSize()
                 .padding(padding),
         ) {
-            LazyColumn(
-                state = listState,
-                modifier = Modifier.weight(1f).fillMaxWidth(),
-                reverseLayout = true,
-            ) {
-                items(state.messages.reversed(), key = { it.id }) { message ->
-                    MessageBubble(message = message)
+            if (state.messages.isEmpty() && !state.isLoading && !state.isSending) {
+                Box(
+                    modifier = Modifier.weight(1f).fillMaxWidth(),
+                    contentAlignment = Alignment.Center,
+                ) {
+                    Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                        Icon(
+                            Icons.Filled.ChatBubbleOutline,
+                            contentDescription = null,
+                            tint = MaterialTheme.colorScheme.onSurfaceVariant,
+                            modifier = Modifier.padding(bottom = 8.dp),
+                        )
+                        Text(
+                            text = "Send a message to start a conversation",
+                            color = MaterialTheme.colorScheme.onSurfaceVariant,
+                            style = MaterialTheme.typography.bodyMedium,
+                        )
+                    }
+                }
+            } else {
+                LazyColumn(
+                    state = listState,
+                    modifier = Modifier.weight(1f).fillMaxWidth(),
+                    reverseLayout = true,
+                ) {
+                    if (state.isSending) {
+                        item(key = "typing") {
+                            TypingIndicator()
+                        }
+                    }
+                    items(state.messages.reversed(), key = { it.id }) { message ->
+                        MessageBubble(message = message)
+                    }
                 }
             }
 

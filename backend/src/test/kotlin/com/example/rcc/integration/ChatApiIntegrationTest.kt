@@ -1,11 +1,9 @@
 package com.example.rcc.integration
 
 import com.example.rcc.features.chat.dto.ChatResponse
-import com.example.rcc.features.chat.dto.ErrorResponse
 import com.example.rcc.module
 import io.kotest.matchers.shouldBe
 import io.kotest.matchers.shouldNotBe
-import io.kotest.matchers.string.shouldContain
 import io.ktor.client.call.body
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
 import io.ktor.client.request.delete
@@ -80,29 +78,27 @@ public class ChatApiIntegrationTest {
         response.status shouldBe HttpStatusCode.BadRequest
     }
 
-    /** Test: delete chat returns not implemented. */
+    /** Test: delete chat returns no content. */
     @Test
-    public fun testDeleteChatNotImplemented() = testApplication {
+    public fun testDeleteChat() = testApplication {
         application { module() }
         val jsonClient = createClient {
             install(ContentNegotiation) { json() }
         }
 
         val response = jsonClient.delete("/api/chats/some-id")
-        response.status shouldBe HttpStatusCode.NotImplemented
-        val error = response.body<ErrorResponse>()
-        error.error shouldContain "not implemented"
+        response.status shouldBe HttpStatusCode.NoContent
     }
 
-    /** Test: get messages returns not implemented. */
+    /** Test: get messages returns OK with empty list. */
     @Test
-    public fun testGetMessagesNotImplemented() = testApplication {
+    public fun testGetMessages() = testApplication {
         application { module() }
         val jsonClient = createClient {
             install(ContentNegotiation) { json() }
         }
 
         val response = jsonClient.get("/api/chats/some-id/messages")
-        response.status shouldBe HttpStatusCode.NotImplemented
+        response.status shouldBe HttpStatusCode.OK
     }
 }

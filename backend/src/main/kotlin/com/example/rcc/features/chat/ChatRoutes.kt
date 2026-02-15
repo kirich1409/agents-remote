@@ -96,10 +96,19 @@ private fun Route.chatRoutes(chatHandler: ChatHandler) {
                 )
                 return@delete
             }
-            call.respond(
-                HttpStatusCode.NotImplemented,
-                ErrorResponse(error = "Delete chat not implemented"),
-            )
+            chatHandler
+                .deleteChat(chatId)
+                .onSuccess {
+                    call.respond(HttpStatusCode.NoContent)
+                }.onFailure { error ->
+                    call.respond(
+                        HttpStatusCode.InternalServerError,
+                        ErrorResponse(
+                            error = "Failed to delete chat",
+                            details = error.message,
+                        ),
+                    )
+                }
         }
 
         // POST /api/chats/{chatId}/messages - Sends a message to a chat
@@ -131,10 +140,27 @@ private fun Route.chatRoutes(chatHandler: ChatHandler) {
 
             // GET /api/chats/{chatId}/messages - Retrieves messages in a chat
             get {
-                call.respond(
-                    HttpStatusCode.NotImplemented,
-                    ErrorResponse(error = "Retrieving messages is not implemented"),
-                )
+                val chatId = call.parameters["chatId"]?.takeIf { it.isNotBlank() }
+                if (chatId == null) {
+                    call.respond(
+                        HttpStatusCode.BadRequest,
+                        ErrorResponse(error = "Chat id is required"),
+                    )
+                    return@get
+                }
+                chatHandler
+                    .getMessages(chatId)
+                    .onSuccess { messages ->
+                        call.respond(HttpStatusCode.OK, messages)
+                    }.onFailure { error ->
+                        call.respond(
+                            HttpStatusCode.InternalServerError,
+                            ErrorResponse(
+                                error = "Failed to retrieve messages",
+                                details = error.message,
+                            ),
+                        )
+                    }
             }
         }
     }

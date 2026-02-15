@@ -30,6 +30,10 @@ class ChatRepositoryTest {
                 override suspend fun sendMessage(chatId: String, content: String) = Result.success(
                     Message(chatId = chatId, role = MessageRole.USER, content = content),
                 )
+
+                override suspend fun sendAssistantMessage(chatId: String, content: String) = Result.success(
+                    Message(chatId = chatId, role = MessageRole.ASSISTANT, content = content),
+                )
             }
         // If this compiles and runs, the interface contract is correct
         assertNotNull(repo)

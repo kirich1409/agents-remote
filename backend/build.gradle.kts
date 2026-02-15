@@ -18,6 +18,8 @@ dependencies {
     implementation(project(":shared"))
 
     implementation(libs.bundles.ktor.server)
+    implementation(libs.ktor.client.cio)
+    implementation(libs.ktor.client.content.negotiation)
     implementation(libs.sqldelight.runtime)
     implementation(libs.sqldelight.jdbc.driver)
     implementation(libs.koin.core)

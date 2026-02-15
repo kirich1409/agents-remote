@@ -73,9 +73,11 @@ class ChatDetailStoreTest {
         val store = createStore("chat-1")
         store.accept(ChatDetailStore.Intent.SendMessage("Hi there"))
 
-        assertEquals(1, store.state.messages.size)
+        assertEquals(2, store.state.messages.size)
         assertEquals("Hi there", store.state.messages[0].content)
         assertEquals(MessageRole.USER, store.state.messages[0].role)
+        assertEquals("Hi there", store.state.messages[1].content)
+        assertEquals(MessageRole.USER, store.state.messages[1].role)
         assertFalse(store.state.isSending)
     }
 
@@ -85,7 +87,9 @@ class ChatDetailStoreTest {
         val store = createStore("chat-1")
         store.accept(ChatDetailStore.Intent.SendMessage("test"))
 
-        assertTrue(store.state.messages.isEmpty())
+        assertEquals(1, store.state.messages.size)
+        assertEquals("test", store.state.messages[0].content)
+        assertEquals(MessageRole.USER, store.state.messages[0].role)
         assertFalse(store.state.isSending)
         assertEquals("Test error", store.state.error)
     }
@@ -114,6 +118,9 @@ private class FakeChatRepository : ChatRepository {
         messages.getOrPut(chatId) { mutableListOf() }.add(message)
         return Result.success(message)
     }
+
+    override suspend fun sendAssistantMessage(chatId: String, content: String): Result<Message> =
+        sendMessage(chatId, content)
 
     override suspend fun getMessages(chatId: String, limit: Int, offset: Int): Result<List<Message>> = if (shouldFail) {
         Result.failure(Exception("Test error"))

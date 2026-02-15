@@ -22,4 +22,14 @@ public object AppConfig {
      * Logging level.
      */
     public val logLevel: String = System.getenv("LOG_LEVEL") ?: "INFO"
+
+    /**
+     * Path to the Claude Code CLI binary.
+     */
+    public val claudePath: String = System.getenv("CLAUDE_PATH") ?: "claude"
+
+    /**
+     * Claude model to use.
+     */
+    public val claudeModel: String = System.getenv("CLAUDE_MODEL") ?: "sonnet"
 }

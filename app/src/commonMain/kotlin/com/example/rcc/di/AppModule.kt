@@ -11,12 +11,16 @@ import com.example.rcc.domain.usecase.SendMessageUseCase
 import com.example.rcc.features.chatdetail.store.ChatDetailStoreFactory
 import com.example.rcc.features.chatlist.store.ChatListStoreFactory
 import io.ktor.client.HttpClient
+import io.ktor.client.plugins.HttpTimeout
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
 import io.ktor.serialization.kotlinx.json.json
 import kotlinx.serialization.json.Json
 import org.koin.dsl.module
 
 private const val DEFAULT_BASE_URL = "http://10.0.2.2:3000"
+private const val REQUEST_TIMEOUT_MS = 180_000L
+private const val CONNECT_TIMEOUT_MS = 10_000L
+private const val SOCKET_TIMEOUT_MS = 180_000L
 
 internal val appModule =
     module {
@@ -29,6 +33,11 @@ internal val appModule =
                             isLenient = true
                         },
                     )
+                }
+                install(HttpTimeout) {
+                    requestTimeoutMillis = REQUEST_TIMEOUT_MS
+                    connectTimeoutMillis = CONNECT_TIMEOUT_MS
+                    socketTimeoutMillis = SOCKET_TIMEOUT_MS
                 }
             }
         }
