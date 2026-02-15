@@ -7,6 +7,7 @@ import io.ktor.server.websocket.pingPeriod
 import kotlin.time.Duration.Companion.seconds
 
 private const val WS_TIMEOUT_MILLIS = 15_000L
+private const val WS_MAX_FRAME_SIZE = 1L * 1024 * 1024
 
 /**
  * Configures WebSocket support for the application.
@@ -18,7 +19,7 @@ public fun Application.configureWebSockets() {
     install(WebSockets) {
         pingPeriod = 15.seconds
         timeoutMillis = WS_TIMEOUT_MILLIS
-        maxFrameSize = Long.MAX_VALUE
+        maxFrameSize = WS_MAX_FRAME_SIZE
         masking = false
     }
 }

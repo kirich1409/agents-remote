@@ -1,5 +1,6 @@
 package com.example.rcc
 
+import com.example.rcc.config.AppConfig
 import com.example.rcc.di.appModule
 import com.example.rcc.features.chat.configureChatWebSocketRoutes
 import com.example.rcc.plugins.configureRouting
@@ -9,24 +10,16 @@ import io.ktor.server.application.Application
 import io.ktor.server.application.install
 import io.ktor.server.cio.CIO
 import io.ktor.server.engine.embeddedServer
-import org.koin.core.context.startKoin
 import org.koin.ktor.plugin.Koin
 
 /**
  * Application entry point.
  *
- * Initializes Koin DI container and starts the Ktor server on port 3000.
+ * Starts the Ktor server using configuration from [AppConfig].
  */
 public fun main() {
-    startKoin {
-        modules(appModule)
-    }
-
-    embeddedServer(CIO, port = 3000, host = "0.0.0.0") {
-        configureSerialization()
-        configureWebSockets()
-        configureRouting()
-        configureChatWebSocketRoutes()
+    embeddedServer(CIO, port = AppConfig.gatewayPort, host = "0.0.0.0") {
+        module()
     }.start(wait = true)
 }
 

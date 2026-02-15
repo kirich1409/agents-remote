@@ -15,7 +15,9 @@ import io.ktor.server.routing.post
 import io.ktor.server.routing.route
 import io.ktor.server.routing.routing
 import io.ktor.server.websocket.webSocket
+import io.ktor.websocket.Frame
 import io.ktor.websocket.close
+import io.ktor.websocket.readText
 import org.koin.ktor.ext.inject
 
 /**
@@ -85,15 +87,31 @@ private fun Route.chatRoutes(chatHandler: ChatHandler) {
 
         // DELETE /api/chats/{id} - Deletes a chat by ID
         delete("{id}") {
-            val chatId = call.parameters["id"] ?: ""
-            // Delete chat not yet implemented
-            call.respond(HttpStatusCode.NoContent)
+            val chatId = call.parameters["id"]?.takeIf { it.isNotBlank() }
+            if (chatId == null) {
+                call.respond(
+                    HttpStatusCode.BadRequest,
+                    ErrorResponse(error = "Chat id is required"),
+                )
+                return@delete
+            }
+            call.respond(
+                HttpStatusCode.NotImplemented,
+                ErrorResponse(error = "Delete chat not implemented"),
+            )
         }
 
         // POST /api/chats/{chatId}/messages - Sends a message to a chat
         route("{chatId}/messages") {
             post {
-                val chatId = call.parameters["chatId"] ?: ""
+                val chatId = call.parameters["chatId"]?.takeIf { it.isNotBlank() }
+                if (chatId == null) {
+                    call.respond(
+                        HttpStatusCode.BadRequest,
+                        ErrorResponse(error = "Chat id is required"),
+                    )
+                    return@post
+                }
                 val request = call.receive<SendMessageRequest>()
                 chatHandler
                     .sendMessage(chatId, request.content)
@@ -112,9 +130,10 @@ private fun Route.chatRoutes(chatHandler: ChatHandler) {
 
             // GET /api/chats/{chatId}/messages - Retrieves messages in a chat
             get {
-                val chatId = call.parameters["chatId"] ?: ""
-                // Get messages not yet implemented
-                call.respond(HttpStatusCode.OK, emptyList<String>())
+                call.respond(
+                    HttpStatusCode.NotImplemented,
+                    ErrorResponse(error = "Retrieving messages is not implemented"),
+                )
             }
         }
     }
@@ -129,13 +148,15 @@ private fun Route.chatWebSocketRoutes(webSocketHandler: WebSocketHandler) {
             webSocketHandler.subscribe(chatId, this)
 
             try {
-                for (message in incoming) {
-                    val event =
-                        WebSocketEvent(
-                            type = "message",
-                            data = message.data.toString(Charsets.UTF_8),
-                        )
-                    webSocketHandler.broadcast(chatId, event)
+                for (frame in incoming) {
+                    if (frame is Frame.Text) {
+                        val event =
+                            WebSocketEvent(
+                                type = "message",
+                                data = frame.readText(),
+                            )
+                        webSocketHandler.broadcast(chatId, event)
+                    }
                 }
             } finally {
                 webSocketHandler.unsubscribe(chatId, this)

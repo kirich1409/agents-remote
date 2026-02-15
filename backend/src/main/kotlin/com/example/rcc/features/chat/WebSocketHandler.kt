@@ -4,6 +4,7 @@ import io.ktor.websocket.Frame
 import io.ktor.websocket.WebSocketSession
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.Json
+import java.util.Collections
 import java.util.concurrent.ConcurrentHashMap
 
 /**
@@ -25,7 +26,7 @@ public data class WebSocketEvent(
  * Handles subscription, unsubscription, and broadcasting of real-time events.
  */
 public class WebSocketHandler {
-    private val connections: MutableMap<String, MutableSet<WebSocketSession>> =
+    private val connections: ConcurrentHashMap<String, MutableSet<WebSocketSession>> =
         ConcurrentHashMap()
 
     /**
@@ -41,7 +42,10 @@ public class WebSocketHandler {
         chatId: String,
         session: WebSocketSession,
     ) {
-        connections.getOrPut(chatId) { mutableSetOf() }.add(session)
+        connections
+            .computeIfAbsent(chatId) {
+                Collections.newSetFromMap(ConcurrentHashMap())
+            }.add(session)
     }
 
     /**
@@ -72,7 +76,7 @@ public class WebSocketHandler {
      * @param chatId The chat identifier.
      * @return Set of WebSocket sessions connected to the chat.
      */
-    public fun getConnections(chatId: String): Set<WebSocketSession> = connections[chatId].orEmpty()
+    public fun getConnections(chatId: String): Set<WebSocketSession> = connections[chatId]?.toSet().orEmpty()
 
     /**
      * Broadcasts a WebSocket event to all connections in a chat.
