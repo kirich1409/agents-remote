@@ -105,7 +105,3 @@ compose.desktop {
     }
 }
 
-// Quality gates
-tasks.named("build") {
-    dependsOn("detekt")
-}

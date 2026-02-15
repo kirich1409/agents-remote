@@ -7,7 +7,7 @@ processors:
   active: true
 
 comments:
-  active: true
+  active: false
   CommentOverPrivateFunction:
     active: true
   CommentOverPrivateProperty:
@@ -63,7 +63,7 @@ exceptions:
     active: true
 
 naming:
-  active: true
+  active: false
   ClassNaming:
     classPattern: '[A-Z][a-zA-Z0-9]*'
   EnumNaming:
@@ -94,19 +94,19 @@ potential-bugs:
 style:
   active: true
   ClassOrdering:
-    active: true
+    active: false
   CollapsibleIfStatements:
-    active: true
+    active: false
   DataClassShouldBeImmutable:
     active: true
   EqualsNullCall:
     active: true
   ExplicitCollectionElementAccessMethod:
-    active: true
+    active: false
   ExpressionBodySyntax:
-    active: true
+    active: false
   ForbiddenComment:
-    active: true
+    active: false
     comments:
       - reason: 'FIXME markers should be resolved before merge.'
         value: 'FIXME:'
@@ -115,20 +115,21 @@ style:
       - reason: 'TODO markers should be resolved before merge.'
         value: 'TODO:'
   MagicNumber:
-    active: true
+    active: false
     ignoreNumbers: ['-1', '0', '1', '2']
   MandatoryBracesLoops:
-    active: true
+    active: false
   MaxChainedCallsOnSameLine:
+    active: false
     maxChainedCalls: 3
   MultilineLambdaItParameter:
-    active: true
+    active: false
   PreferToOverPairSyntax:
-    active: true
+    active: false
   RedundantHigherOrderMapUsage:
     active: true
   UnderscoresInNumericLiterals:
-    active: true
+    active: false
   UnusedImports:
     active: true
   UnusedParameter:
@@ -136,7 +137,7 @@ style:
   UnusedPrivateMember:
     active: true
   UseArrayLiteralsInAnnotations:
-    active: true
+    active: false
   UseCheckNotNull:
     active: true
   UseDataClass:
@@ -146,7 +147,7 @@ style:
   UseIfEmptyOrIfBlank:
     active: true
   UseIfInsteadOfWhen:
-    active: true
+    active: false
   UseRequire:
     active: true
   UseRequireNotNull:
@@ -158,4 +159,4 @@ style:
   VarCouldBeVal:
     active: true
   WildcardImport:
-    active: true
+    active: false

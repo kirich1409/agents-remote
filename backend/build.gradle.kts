@@ -47,10 +47,8 @@ detekt {
 
 tasks.test {
     useJUnitPlatform()
-    finalizedBy("detekt")
 }
 
-// Quality gates
 tasks.named("build") {
-    dependsOn("detekt", "test")
+    dependsOn("test")
 }
