@@ -32,8 +32,8 @@ jobs:
       - name: Build project
         run: ./gradlew :shared:build :backend:build -x test --no-daemon -q
 
-      - name: Run ktlint checks
-        run: ./gradlew ktlintCheck --no-daemon -q
+      - name: Run spotless checks
+        run: ./gradlew spotlessCheck --no-daemon -q
 
       - name: Run detekt analysis
         run: ./gradlew detekt --no-daemon
@@ -50,7 +50,7 @@ jobs:
               body: `✅ **Quality Checks Passed**
 
               - Build: ✅
-              - ktlint: ✅ No formatting issues
+              - spotless (ktlint): ✅ No formatting issues
               - detekt: ✅ No code smells
               - Compiler: ✅ Zero warnings`
             })
