@@ -4,7 +4,7 @@ import com.example.rcc.domain.entity.Chat
 import com.example.rcc.domain.entity.Message
 import com.example.rcc.domain.entity.MessageRole
 import kotlin.test.Test
-import kotlin.test.assertTrue
+import kotlin.test.assertNotNull
 
 class ChatRepositoryTest {
     @Test
@@ -40,7 +40,7 @@ class ChatRepositoryTest {
                 )
             }
         // If this compiles and runs, the interface contract is correct
-        assertTrue(repo is ChatRepository)
+        assertNotNull(repo)
     }
 }
 
@@ -59,6 +59,6 @@ class SessionRepositoryTest {
                 override suspend fun isAuthenticated() = Result.success(false)
             }
         // If this compiles and runs, the interface contract is correct
-        assertTrue(repo is SessionRepository)
+        assertNotNull(repo)
     }
 }
