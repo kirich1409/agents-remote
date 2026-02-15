@@ -8,7 +8,7 @@ plugins {
     id("com.android.library") version "8.7.3" apply false
     id("com.google.devtools.ksp") version "2.3.5" apply false
     id("app.cash.sqldelight") version "2.2.1" apply false
-    id("io.gitlab.arturbosch.detekt") version "1.23.6" apply false
+    id("io.gitlab.arturbosch.detekt") version "1.23.8" apply false
     id("org.jmailen.kotlinter") version "4.4.1" apply false
 }
 
