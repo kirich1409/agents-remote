@@ -53,7 +53,7 @@ public class ClaudeCodeService {
             add(sessionId)
             add("--model")
             add(claudeModel)
-            add(content)
+            add(sanitizeInput(content))
         }
 
         val process = ProcessBuilder(command).apply {
@@ -83,7 +83,31 @@ public class ClaudeCodeService {
         response.result
     }
 
+    /**
+     * Sanitizes user input to prevent command injection attacks.
+     *
+     * @param input Raw user input string.
+     * @return Sanitized string safe for shell execution.
+     * @throws IllegalArgumentException if input exceeds maximum allowed length.
+     */
+    internal fun sanitizeInput(input: String): String {
+        require(input.length <= MAX_MESSAGE_LENGTH) {
+            "Message exceeds maximum length of $MAX_MESSAGE_LENGTH characters"
+        }
+
+        // Remove or escape dangerous shell characters that could enable command injection
+        return input
+            .replace("$", "\\$")      // Prevent variable expansion
+            .replace(";", "")         // Remove command separator
+            .replace("|", "")         // Remove pipe operator
+            .replace("&", "")         // Remove background/AND operators
+            .replace("`", "")         // Remove backtick command substitution
+            .replace("\n", " ")       // Replace newlines with spaces
+            .replace("\r", "")        // Remove carriage returns
+    }
+
     private companion object {
         private const val TIMEOUT_SECONDS = 120L
+        private const val MAX_MESSAGE_LENGTH = 50_000
     }
 }
