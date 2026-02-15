@@ -16,7 +16,7 @@ import io.ktor.serialization.kotlinx.json.json
 import kotlinx.serialization.json.Json
 import org.koin.dsl.module
 
-private const val DEFAULT_BASE_URL = "http://10.0.2.2:8080"
+private const val DEFAULT_BASE_URL = "http://10.0.2.2:3000"
 
 internal val appModule =
     module {
