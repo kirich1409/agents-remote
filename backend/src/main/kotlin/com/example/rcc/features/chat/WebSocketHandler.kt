@@ -3,6 +3,9 @@ package com.example.rcc.features.chat
 import io.github.aakira.napier.Napier
 import io.ktor.websocket.Frame
 import io.ktor.websocket.WebSocketSession
+import kotlinx.coroutines.DelicateCoroutinesApi
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.Json
 import org.koin.core.annotation.Single
@@ -80,23 +83,26 @@ public class WebSocketHandler {
      * @param chatId The chat identifier to broadcast to.
      * @param event The event to broadcast.
      */
+    @OptIn(DelicateCoroutinesApi::class)
     public suspend fun broadcast(chatId: String, event: WebSocketEvent) {
-        val sessions = connections[chatId]?.toList() ?: return
+        val snapshot = connections[chatId]?.toList() ?: return
         val json = Json.encodeToString(WebSocketEvent.serializer(), event)
 
-        val failedSessions = mutableListOf<WebSocketSession>()
-
-        for (session in sessions) {
+        snapshot.forEach { session ->
             try {
                 session.send(Frame.Text(json))
             } catch (e: Exception) {
-                Napier.w("Failed to send WebSocket message", e)
-                failedSessions.add(session)
+                Napier.w("Failed to send message to session", e)
+                // Асинхронный cleanup - не блокирует broadcast
+                GlobalScope.launch {
+                    try {
+                        unsubscribe(chatId, session)
+                    } catch (e: Exception) {
+                        Napier.e("Failed to unsubscribe session", e)
+                    }
+                }
             }
         }
-
-        // Remove dead connections
-        failedSessions.forEach { session -> unsubscribe(chatId, session) }
     }
 
     /**
