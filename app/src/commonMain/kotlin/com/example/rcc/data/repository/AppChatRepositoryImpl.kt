@@ -4,7 +4,9 @@ import com.example.rcc.data.api.RccApiClient
 import com.example.rcc.domain.entity.Chat
 import com.example.rcc.domain.entity.Message
 import com.example.rcc.domain.repository.ChatRepository
+import org.koin.core.annotation.Single
 
+@Single(binds = [ChatRepository::class])
 internal class AppChatRepositoryImpl(private val apiClient: RccApiClient) : ChatRepository {
     override suspend fun getChats(): Result<List<Chat>> = runCatching { apiClient.getChats() }
 

@@ -10,6 +10,7 @@ import com.example.rcc.features.chat.dto.ChatResponse
 import com.example.rcc.features.chat.dto.MessageResponse
 import com.example.rcc.service.ClaudeCodeService
 import io.github.aakira.napier.Napier
+import org.koin.core.annotation.Single
 
 /**
  * Handler for chat operations.
@@ -24,6 +25,7 @@ import io.github.aakira.napier.Napier
  * @param claudeCodeService Service for interacting with Claude Code CLI.
  * @param webSocketHandler Handler for WebSocket broadcasting.
  */
+@Single
 public class ChatHandler(
     private val chatRepository: ChatRepository,
     private val getChatsUseCase: GetChatsUseCase,

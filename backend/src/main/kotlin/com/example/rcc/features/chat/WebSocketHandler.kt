@@ -5,6 +5,7 @@ import io.ktor.websocket.Frame
 import io.ktor.websocket.WebSocketSession
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.Json
+import org.koin.core.annotation.Single
 import java.util.Collections
 import java.util.concurrent.ConcurrentHashMap
 
@@ -23,6 +24,7 @@ public data class WebSocketEvent(val type: String, val data: String)
  * Maintains a registry of active WebSocket connections grouped by chat ID.
  * Handles subscription, unsubscription, and broadcasting of real-time events.
  */
+@Single
 public class WebSocketHandler {
     private val connections: ConcurrentHashMap<String, MutableSet<WebSocketSession>> =
         ConcurrentHashMap()

@@ -9,8 +9,10 @@ import com.example.rcc.domain.usecase.GetChatsUseCase
 import com.example.rcc.features.chatlist.store.ChatListStore.Intent
 import com.example.rcc.features.chatlist.store.ChatListStore.State
 import kotlinx.coroutines.launch
+import org.koin.core.annotation.Single
 
 /** Factory that creates [ChatListStore] instances wired with use cases. */
+@Single
 public class ChatListStoreFactory(
     private val storeFactory: StoreFactory,
     private val getChatsUseCase: GetChatsUseCase,
