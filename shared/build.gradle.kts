@@ -50,7 +50,7 @@ kotlin {
 
         val backendMain by getting {
             dependencies {
-                implementation(libs.sqldelight.jdbc.driver)
+                implementation(libs.sqldelight.sqlite.driver)
             }
         }
 

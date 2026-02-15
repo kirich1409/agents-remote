@@ -1,6 +1,6 @@
 package com.example.rcc.domain.entity
 
-import com.example.rcc.domain.util.UuidGenerator
+import com.example.rcc.domain.util.randomUuid
 import kotlinx.serialization.Serializable
 
 /**
@@ -14,7 +14,7 @@ import kotlinx.serialization.Serializable
  */
 @Serializable
 public data class Chat(
-    val id: String = UuidGenerator.randomUuid(),
+    val id: String = randomUuid(),
     val sessionId: String,
     val createdAt: Long = currentTimeMillis(),
     val lastActivity: Long = currentTimeMillis(),
