@@ -51,6 +51,15 @@ public interface ChatRepository {
     public suspend fun sendMessage(chatId: String, content: String): Result<Message>
 
     /**
+     * Sends an assistant message to a chat.
+     *
+     * @param chatId ID of the chat to send message to.
+     * @param content Text content of the assistant message.
+     * @return Result containing the created message, or failure if operation failed.
+     */
+    public suspend fun sendAssistantMessage(chatId: String, content: String): Result<Message>
+
+    /**
      * Retrieves messages from a chat with pagination.
      *
      * @param chatId ID of the chat.

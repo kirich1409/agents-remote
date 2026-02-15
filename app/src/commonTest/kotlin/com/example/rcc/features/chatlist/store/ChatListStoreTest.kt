@@ -122,6 +122,9 @@ private class FakeChatRepository : ChatRepository {
     override suspend fun sendMessage(chatId: String, content: String): Result<Message> =
         Result.failure(Exception("Not implemented"))
 
+    override suspend fun sendAssistantMessage(chatId: String, content: String): Result<Message> =
+        Result.failure(Exception("Not implemented"))
+
     override suspend fun getMessages(chatId: String, limit: Int, offset: Int): Result<List<Message>> =
         Result.success(emptyList())
 }

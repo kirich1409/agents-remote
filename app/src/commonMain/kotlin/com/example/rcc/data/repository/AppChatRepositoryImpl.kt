@@ -18,6 +18,9 @@ internal class AppChatRepositoryImpl(private val apiClient: RccApiClient) : Chat
     override suspend fun sendMessage(chatId: String, content: String): Result<Message> =
         runCatching { apiClient.sendMessage(chatId, content) }
 
+    override suspend fun sendAssistantMessage(chatId: String, content: String): Result<Message> =
+        runCatching { apiClient.sendMessage(chatId, content) }
+
     override suspend fun getMessages(chatId: String, limit: Int, offset: Int): Result<List<Message>> =
         runCatching { apiClient.getMessages(chatId) }
 }

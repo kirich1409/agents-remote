@@ -2,64 +2,74 @@ package com.example.rcc.data.repository
 
 import com.example.rcc.domain.entity.Chat
 import com.example.rcc.domain.entity.Message
+import com.example.rcc.domain.entity.MessageRole
 import com.example.rcc.domain.repository.ChatRepository
 
 /**
- * Implementation stub of ChatRepository.
+ * In-memory implementation of ChatRepository.
  *
- * Provides basic in-memory functionality for MVP.
+ * Stores chats and messages in memory for MVP.
  * Will be replaced with proper persistence in later phases.
  */
 public class ChatRepositoryImpl : ChatRepository {
-    /**
-     * Retrieves all chats.
-     *
-     * @return Empty list (stub implementation).
-     */
-    override suspend fun getChats(): Result<List<Chat>> = Result.success(emptyList())
+    private val chats = mutableListOf<Chat>()
+    private val messages = mutableListOf<Message>()
 
-    /**
-     * Retrieves a chat by ID.
-     *
-     * @param id Chat identifier.
-     * @return Failure (not implemented).
-     */
-    override suspend fun getChatById(id: String): Result<Chat> = Result.failure(Exception("Not implemented"))
+    override suspend fun getChats(): Result<List<Chat>> = Result.success(chats.toList())
 
-    /**
-     * Creates a new chat.
-     *
-     * @param sessionId Session identifier.
-     * @return New Chat with the provided session ID.
-     */
-    override suspend fun createChat(sessionId: String): Result<Chat> = Result.success(Chat(sessionId = sessionId))
+    override suspend fun getChatById(id: String): Result<Chat> {
+        val chat = chats.find { it.id == id }
+        return if (chat != null) {
+            Result.success(chat)
+        } else {
+            Result.failure(Exception("Chat not found: $id"))
+        }
+    }
 
-    /**
-     * Deletes a chat.
-     *
-     * @param id Chat identifier to delete.
-     * @return Success (stub implementation).
-     */
-    override suspend fun deleteChat(id: String): Result<Unit> = Result.success(Unit)
+    override suspend fun createChat(sessionId: String): Result<Chat> {
+        val chat = Chat(sessionId = sessionId)
+        chats.add(chat)
+        return Result.success(chat)
+    }
 
-    /**
-     * Sends a message.
-     *
-     * @param chatId Chat identifier.
-     * @param content Message content.
-     * @return Failure (not implemented).
-     */
-    override suspend fun sendMessage(chatId: String, content: String): Result<Message> =
-        Result.failure(Exception("Not implemented"))
+    override suspend fun deleteChat(id: String): Result<Unit> {
+        chats.removeAll { it.id == id }
+        messages.removeAll { it.chatId == id }
+        return Result.success(Unit)
+    }
 
-    /**
-     * Retrieves messages.
-     *
-     * @param chatId Chat identifier.
-     * @param limit Maximum messages.
-     * @param offset Offset for pagination.
-     * @return Empty list (stub implementation).
-     */
-    override suspend fun getMessages(chatId: String, limit: Int, offset: Int): Result<List<Message>> =
-        Result.success(emptyList())
+    override suspend fun sendMessage(chatId: String, content: String): Result<Message> {
+        val chat = chats.find { it.id == chatId }
+            ?: return Result.failure(Exception("Chat not found: $chatId"))
+
+        val message = Message(
+            chatId = chatId,
+            role = MessageRole.USER,
+            content = content,
+        )
+        messages.add(message)
+        return Result.success(message)
+    }
+
+    override suspend fun sendAssistantMessage(chatId: String, content: String): Result<Message> {
+        val chat = chats.find { it.id == chatId }
+            ?: return Result.failure(Exception("Chat not found: $chatId"))
+
+        val message = Message(
+            chatId = chatId,
+            role = MessageRole.ASSISTANT,
+            content = content,
+        )
+        messages.add(message)
+        return Result.success(message)
+    }
+
+    override suspend fun getMessages(chatId: String, limit: Int, offset: Int): Result<List<Message>> {
+        val chatMessages = messages
+            .filter { it.chatId == chatId }
+            .sortedBy { it.timestamp }
+            .drop(offset)
+            .take(limit)
+        return Result.success(chatMessages)
+    }
 }

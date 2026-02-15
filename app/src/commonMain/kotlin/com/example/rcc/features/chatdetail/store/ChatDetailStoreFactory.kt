@@ -4,6 +4,7 @@ import com.arkivanov.mvikotlin.core.store.Store
 import com.arkivanov.mvikotlin.core.store.StoreFactory
 import com.arkivanov.mvikotlin.extensions.coroutines.CoroutineExecutor
 import com.example.rcc.domain.entity.Message
+import com.example.rcc.domain.entity.MessageRole
 import com.example.rcc.domain.repository.ChatRepository
 import com.example.rcc.domain.usecase.SendMessageUseCase
 import com.example.rcc.features.chatdetail.store.ChatDetailStore.Intent
@@ -40,6 +41,10 @@ public class ChatDetailStoreFactory(
                         copy(isSending = true)
                     }
 
+                    is Msg.UserMessageAdded -> {
+                        copy(messages = messages + msg.message)
+                    }
+
                     is Msg.MessageSent -> {
                         copy(
                             messages = messages + msg.message,
@@ -64,6 +69,8 @@ public class ChatDetailStoreFactory(
         data class MessagesLoaded(val messages: List<Message>) : Msg
 
         data object Sending : Msg
+
+        data class UserMessageAdded(val message: Message) : Msg
 
         data class MessageSent(val message: Message) : Msg
 
@@ -91,6 +98,12 @@ public class ChatDetailStoreFactory(
 
         private fun sendMessage(content: String) {
             dispatch(Msg.Sending)
+            val userMessage = Message(
+                chatId = chatId,
+                role = MessageRole.USER,
+                content = content,
+            )
+            dispatch(Msg.UserMessageAdded(userMessage))
             scope.launch {
                 sendMessageUseCase(chatId, content).fold(
                     onSuccess = { dispatch(Msg.MessageSent(it)) },
