@@ -5,6 +5,7 @@ plugins {
     id("org.jetbrains.compose")
     id("com.android.application")
     id("com.google.devtools.ksp")
+    alias(libs.plugins.koin.compiler)
     id("io.gitlab.arturbosch.detekt")
 }
 
@@ -35,6 +36,7 @@ kotlin {
                 implementation(libs.essenty.lifecycle)
                 implementation(libs.koin.core)
                 implementation(libs.koin.compose)
+                implementation(libs.koin.annotations)
                 implementation(libs.napier)
                 implementation(libs.kotlinx.serialization.json)
                 implementation(libs.sqldelight.runtime)

@@ -2,6 +2,7 @@ plugins {
     kotlin("jvm")
     kotlin("plugin.serialization")
     id("io.ktor.plugin")
+    alias(libs.plugins.koin.compiler)
     id("io.gitlab.arturbosch.detekt")
 }
 
@@ -23,6 +24,7 @@ dependencies {
     implementation(libs.sqldelight.runtime)
     implementation(libs.sqldelight.jdbc.driver)
     implementation(libs.koin.core)
+    implementation(libs.koin.annotations)
     implementation(libs.koin.ktor)
     implementation(libs.logback.classic)
     implementation(libs.napier)
