@@ -15,6 +15,7 @@ import io.ktor.server.routing.post
 import io.ktor.server.routing.route
 import io.ktor.server.routing.routing
 import io.ktor.server.websocket.webSocket
+import io.ktor.websocket.CloseReason
 import io.ktor.websocket.Frame
 import io.ktor.websocket.close
 import io.ktor.websocket.readText
@@ -143,7 +144,11 @@ private fun Route.chatWebSocketRoutes(webSocketHandler: WebSocketHandler) {
     route("/ws/chats") {
         // WS /ws/chats/{chatId} - WebSocket connection for real-time chat messaging
         webSocket("{chatId}") {
-            val chatId = call.parameters["chatId"] ?: return@webSocket
+            val chatId = call.parameters["chatId"]?.takeIf { it.isNotBlank() }
+            if (chatId == null) {
+                close(CloseReason(CloseReason.Codes.CANNOT_ACCEPT, "Chat ID is required"))
+                return@webSocket
+            }
 
             webSocketHandler.subscribe(chatId, this)
 

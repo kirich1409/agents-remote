@@ -1,5 +1,6 @@
 package com.example.rcc.features.chat
 
+import io.github.aakira.napier.Napier
 import io.ktor.websocket.Frame
 import io.ktor.websocket.WebSocketSession
 import kotlinx.serialization.Serializable
@@ -91,15 +92,16 @@ public class WebSocketHandler {
         chatId: String,
         event: WebSocketEvent,
     ) {
-        val sessions = connections[chatId] ?: return
+        val sessions = connections[chatId]?.toList() ?: return
         val json = Json.encodeToString(WebSocketEvent.serializer(), event)
 
-        val failedSessions = mutableSetOf<WebSocketSession>()
+        val failedSessions = mutableListOf<WebSocketSession>()
 
         for (session in sessions) {
             try {
                 session.send(Frame.Text(json))
             } catch (e: Exception) {
+                Napier.w("Failed to send WebSocket message", e)
                 failedSessions.add(session)
             }
         }

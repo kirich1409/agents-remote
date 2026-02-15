@@ -11,10 +11,7 @@ public object AppConfig {
     /**
      * Authentication token for Cloud Code sessions.
      */
-    public val authToken: String =
-        requireNotNull(System.getenv("AUTH_TOKEN")) {
-            "Environment variable AUTH_TOKEN must be set"
-        }
+    public val authToken: String? = System.getenv("AUTH_TOKEN")
 
     /**
      * Gateway server port.
