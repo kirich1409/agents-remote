@@ -1,7 +1,6 @@
 package com.example.rcc.domain.entity
 
 import com.example.rcc.domain.util.UuidGenerator
-import kotlinx.datetime.Clock
 import kotlinx.serialization.Serializable
 
 /**
@@ -19,7 +18,7 @@ public data class Message(
     val chatId: String,
     val role: MessageRole,
     val content: String,
-    val timestamp: Long = Clock.System.now().toEpochMilliseconds(),
+    val timestamp: Long = currentTimeMillis(),
 )
 
 /** Role of a message sender. */

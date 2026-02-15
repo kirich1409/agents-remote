@@ -16,7 +16,7 @@ public class GetChatsUseCase(
      *
      * @return Result containing list of chats, or failure if operation failed.
      */
-    suspend operator fun invoke(): Result<List<Chat>> =
+    public suspend operator fun invoke(): Result<List<Chat>> =
         try {
             repository.getChats()
         } catch (e: Exception) {

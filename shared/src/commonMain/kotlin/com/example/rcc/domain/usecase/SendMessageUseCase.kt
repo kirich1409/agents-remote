@@ -21,7 +21,7 @@ public class SendMessageUseCase(
      * @param content Text content of the message.
      * @return Result containing the created message, or failure if validation fails or operation failed.
      */
-    suspend operator fun invoke(
+    public suspend operator fun invoke(
         chatId: String,
         content: String,
     ): Result<Message> =

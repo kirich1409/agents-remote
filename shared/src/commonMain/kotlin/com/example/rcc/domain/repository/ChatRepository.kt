@@ -15,7 +15,7 @@ public interface ChatRepository {
      *
      * @return Result containing list of chats, or failure if operation failed.
      */
-    suspend fun getChats(): Result<List<Chat>>
+    public suspend fun getChats(): Result<List<Chat>>
 
     /**
      * Retrieves a chat by its ID.
@@ -23,7 +23,7 @@ public interface ChatRepository {
      * @param id Unique identifier of the chat.
      * @return Result containing the chat, or failure if not found or operation failed.
      */
-    suspend fun getChatById(id: String): Result<Chat>
+    public suspend fun getChatById(id: String): Result<Chat>
 
     /**
      * Creates a new chat for a session.
@@ -31,7 +31,7 @@ public interface ChatRepository {
      * @param sessionId Cloud Code session identifier.
      * @return Result containing the created chat, or failure if operation failed.
      */
-    suspend fun createChat(sessionId: String): Result<Chat>
+    public suspend fun createChat(sessionId: String): Result<Chat>
 
     /**
      * Deletes a chat by its ID.
@@ -39,7 +39,7 @@ public interface ChatRepository {
      * @param id Unique identifier of the chat to delete.
      * @return Result success or failure.
      */
-    suspend fun deleteChat(id: String): Result<Unit>
+    public suspend fun deleteChat(id: String): Result<Unit>
 
     /**
      * Sends a message to a chat.
@@ -48,7 +48,7 @@ public interface ChatRepository {
      * @param content Text content of the message.
      * @return Result containing the created message, or failure if operation failed.
      */
-    suspend fun sendMessage(
+    public suspend fun sendMessage(
         chatId: String,
         content: String,
     ): Result<Message>
@@ -61,7 +61,7 @@ public interface ChatRepository {
      * @param offset Number of messages to skip (default 0).
      * @return Result containing list of messages, or failure if operation failed.
      */
-    suspend fun getMessages(
+    public suspend fun getMessages(
         chatId: String,
         limit: Int = 100,
         offset: Int = 0,

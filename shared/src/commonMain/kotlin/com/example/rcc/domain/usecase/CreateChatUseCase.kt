@@ -20,7 +20,7 @@ public class CreateChatUseCase(
      * @param sessionId Cloud Code session identifier.
      * @return Result containing the created chat, or failure if validation fails or operation failed.
      */
-    suspend operator fun invoke(sessionId: String): Result<Chat> =
+    public suspend operator fun invoke(sessionId: String): Result<Chat> =
         try {
             if (sessionId.isBlank()) {
                 return Result.failure(ChatError.InvalidInput("Session ID cannot be blank"))

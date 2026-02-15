@@ -12,26 +12,26 @@ public interface SessionRepository {
      * @param token Authentication token to save.
      * @return Result success or failure.
      */
-    suspend fun saveSessionToken(token: String): Result<Unit>
+    public suspend fun saveSessionToken(token: String): Result<Unit>
 
     /**
      * Retrieves the saved session token.
      *
      * @return Result containing the token if exists, null if not found, or failure if operation failed.
      */
-    suspend fun getSessionToken(): Result<String?>
+    public suspend fun getSessionToken(): Result<String?>
 
     /**
      * Clears the saved session token.
      *
      * @return Result success or failure.
      */
-    suspend fun clearSessionToken(): Result<Unit>
+    public suspend fun clearSessionToken(): Result<Unit>
 
     /**
      * Checks if user is authenticated.
      *
      * @return Result containing true if authenticated, false otherwise, or failure if operation failed.
      */
-    suspend fun isAuthenticated(): Result<Boolean>
+    public suspend fun isAuthenticated(): Result<Boolean>
 }

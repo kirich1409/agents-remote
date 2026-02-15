@@ -55,11 +55,15 @@ kotlin {
         }
 
         val iosMain by creating {
+            dependsOn(commonMain)
             dependencies {
                 implementation(libs.sqldelight.native.driver)
                 implementation(libs.ktor.client.darwin)
             }
         }
+
+        val iosArm64Main by getting { dependsOn(iosMain) }
+        val iosSimulatorArm64Main by getting { dependsOn(iosMain) }
     }
 }
 

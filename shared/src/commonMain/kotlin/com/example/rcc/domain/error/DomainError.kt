@@ -2,7 +2,7 @@ package com.example.rcc.domain.error
 
 /** Base class for all domain errors. */
 public sealed class DomainError(
-    open val message: String,
+    override val message: String,
 ) : Exception(message)
 
 /** Errors related to chat operations. */

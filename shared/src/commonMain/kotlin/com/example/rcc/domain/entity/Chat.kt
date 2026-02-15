@@ -1,7 +1,6 @@
 package com.example.rcc.domain.entity
 
 import com.example.rcc.domain.util.UuidGenerator
-import kotlinx.datetime.Clock
 import kotlinx.serialization.Serializable
 
 /**
@@ -17,8 +16,8 @@ import kotlinx.serialization.Serializable
 public data class Chat(
     val id: String = UuidGenerator.randomUuid(),
     val sessionId: String,
-    val createdAt: Long = Clock.System.now().toEpochMilliseconds(),
-    val lastActivity: Long = Clock.System.now().toEpochMilliseconds(),
+    val createdAt: Long = currentTimeMillis(),
+    val lastActivity: Long = currentTimeMillis(),
     val title: String = "Chat",
 ) {
     /** Returns true if this chat has a valid session ID. */
