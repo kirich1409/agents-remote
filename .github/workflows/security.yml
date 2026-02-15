@@ -5,7 +5,7 @@ on:
   pull_request:
     types: [opened, synchronize, reopened]
   push:
-    branches: [develop, main]
+    branches: [main]
   schedule:
     - cron: '0 2 * * *'  # Daily at 2 AM UTC
 
