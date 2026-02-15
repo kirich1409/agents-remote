@@ -16,19 +16,12 @@ public expect fun createDriver(): SqlDriver
  * Provides singleton access to the database.
  */
 public object DatabaseFactory {
-    private var instance: RemoteCloudCodeDb? = null
+    private val db: RemoteCloudCodeDb by lazy { RemoteCloudCodeDb(createDriver()) }
 
     /**
-     * Gets or creates the database instance.
+     * Gets the database instance.
      *
      * @return Database instance.
      */
-    public fun getInstance(): RemoteCloudCodeDb = instance ?: RemoteCloudCodeDb(createDriver()).also { instance = it }
-
-    /**
-     * Resets the database instance for testing purposes.
-     */
-    internal fun resetForTesting() {
-        instance = null
-    }
+    public fun getInstance(): RemoteCloudCodeDb = db
 }

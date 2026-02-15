@@ -33,6 +33,8 @@ public class SendMessageUseCase(
                 return Result.failure(ChatError.InvalidInput("Message cannot be empty"))
             }
             repository.sendMessage(chatId, content)
+        } catch (e: kotlin.coroutines.cancellation.CancellationException) {
+            throw e
         } catch (e: Exception) {
             Result.failure(e)
         }

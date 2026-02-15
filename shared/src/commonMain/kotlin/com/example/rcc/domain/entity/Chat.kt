@@ -21,5 +21,5 @@ public data class Chat(
     val title: String = "Chat",
 ) {
     /** Returns true if this chat has a valid session ID. */
-    val isValid: Boolean get() = sessionId.isNotEmpty()
+    val isValid: Boolean get() = sessionId.isNotBlank()
 }

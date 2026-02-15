@@ -26,6 +26,8 @@ public class CreateChatUseCase(
                 return Result.failure(ChatError.InvalidInput("Session ID cannot be blank"))
             }
             repository.createChat(sessionId)
+        } catch (e: kotlin.coroutines.cancellation.CancellationException) {
+            throw e
         } catch (e: Exception) {
             Result.failure(e)
         }

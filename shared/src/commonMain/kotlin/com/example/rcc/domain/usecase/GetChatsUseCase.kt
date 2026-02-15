@@ -19,6 +19,8 @@ public class GetChatsUseCase(
     public suspend operator fun invoke(): Result<List<Chat>> =
         try {
             repository.getChats()
+        } catch (e: kotlin.coroutines.cancellation.CancellationException) {
+            throw e
         } catch (e: Exception) {
             Result.failure(e)
         }
