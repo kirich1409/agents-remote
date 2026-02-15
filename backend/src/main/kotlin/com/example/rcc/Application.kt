@@ -1,7 +1,7 @@
 package com.example.rcc
 
 import com.example.rcc.config.AppConfig
-import com.example.rcc.di.appModule
+import com.example.rcc.di.BackendModule
 import com.example.rcc.features.chat.configureChatWebSocketRoutes
 import com.example.rcc.plugins.configureRouting
 import com.example.rcc.plugins.configureSerialization
@@ -10,7 +10,15 @@ import io.ktor.server.application.Application
 import io.ktor.server.application.install
 import io.ktor.server.cio.CIO
 import io.ktor.server.engine.embeddedServer
+import org.koin.core.annotation.KoinApplication
 import org.koin.ktor.plugin.Koin
+import org.koin.plugin.module.dsl.withConfiguration
+
+/**
+ * Koin application configuration for the backend.
+ */
+@KoinApplication(modules = [BackendModule::class])
+public class KoinBackendApplication
 
 /**
  * Application entry point.
@@ -34,7 +42,7 @@ public fun main() {
  */
 public fun Application.module() {
     install(Koin) {
-        modules(appModule)
+        withConfiguration<KoinBackendApplication>()
     }
     configureSerialization()
     configureWebSockets()

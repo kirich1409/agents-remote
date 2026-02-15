@@ -3,6 +3,7 @@ package com.example.rcc.domain.usecase
 import com.example.rcc.domain.entity.Chat
 import com.example.rcc.domain.error.ChatError
 import com.example.rcc.domain.repository.ChatRepository
+import org.koin.core.annotation.Single
 
 /**
  * Use case for creating a new chat.
@@ -11,6 +12,7 @@ import com.example.rcc.domain.repository.ChatRepository
  *
  * @property repository Chat repository for data access.
  */
+@Single
 public class CreateChatUseCase(private val repository: ChatRepository) {
     /**
      * Creates a new chat for a session.
