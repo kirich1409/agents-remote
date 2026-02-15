@@ -185,4 +185,4 @@ android-library = { id = "com.android.library", version.ref = "agp" }
 ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
 sqldelight = { id = "app.cash.sqldelight", version.ref = "sqldelight" }
 detekt = { id = "io.gitlab.arturbosch.detekt", version = "1.23.6" }
-kotlinter = { id = "org.jmailen.kotlinter", version = "4.4.1" }
+kotlinter = { id = "org.jmailen.kotlinter", version = "5.4.2" }
