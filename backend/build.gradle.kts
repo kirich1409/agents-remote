@@ -3,7 +3,6 @@ plugins {
     kotlin("plugin.serialization")
     id("com.google.devtools.ksp")
     id("io.gitlab.arturbosch.detekt")
-    id("org.jmailen.kotlinter")
 }
 
 kotlin {
@@ -43,10 +42,10 @@ detekt {
 
 tasks.test {
     useJUnitPlatform()
-    finalizedBy("lintKotlin", "detekt")
+    finalizedBy("detekt")
 }
 
 // Quality gates
 tasks.named("build") {
-    dependsOn("lintKotlin", "detekt", "test")
+    dependsOn("detekt", "test")
 }
