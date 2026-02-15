@@ -9,6 +9,20 @@ plugins {
     id("com.google.devtools.ksp") version "2.2.21-2.0.5" apply false
     id("app.cash.sqldelight") version "2.2.1" apply false
     id("io.gitlab.arturbosch.detekt") version "1.23.8" apply false
+    id("com.diffplug.spotless") version "8.2.1"
+}
+
+spotless {
+    kotlin {
+        target("**/*.kt")
+        targetExclude("**/build/**", ".worktrees/**")
+        ktlint()
+    }
+    kotlinGradle {
+        target("**/*.gradle.kts")
+        targetExclude("**/build/**", ".worktrees/**")
+        ktlint()
+    }
 }
 
 allprojects {
@@ -18,10 +32,10 @@ allprojects {
             jvmTarget.set(org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_21)
             allWarningsAsErrors.set(true)
             freeCompilerArgs.addAll(
-                "-Xexplicit-api=strict",  // Require explicit API declarations
+                "-Xexplicit-api=strict", // Require explicit API declarations
                 "-opt-in=kotlin.RequiresOptIn",
                 "-opt-in=kotlin.ExperimentalStdlibApi",
-                "-opt-in=kotlinx.coroutines.ExperimentalCoroutinesApi"
+                "-opt-in=kotlinx.coroutines.ExperimentalCoroutinesApi",
             )
         }
     }
@@ -42,5 +56,6 @@ tasks.register("detekt") {
 // Root quality check aggregation
 tasks.register("codeQualityCheck") {
     dependsOn("detekt")
+    dependsOn("spotlessCheck")
     description = "Run all code quality checks"
 }

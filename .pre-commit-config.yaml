@@ -5,7 +5,19 @@
 repos:
   - repo: local
     hooks:
-      # TODO: Вернуть ktlint hooks после решения конфликта Kotlinter + KMP/Native
+      - id: spotless-apply
+        name: spotless (format)
+        entry: ./gradlew spotlessApply
+        language: system
+        pass_filenames: false
+        stages: [commit]
+
+      - id: spotless-check
+        name: spotless (check)
+        entry: ./gradlew spotlessCheck
+        language: system
+        pass_filenames: false
+        stages: [commit]
 
       - id: detekt-quick
         name: detekt (quick analysis)
