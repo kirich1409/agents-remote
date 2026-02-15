@@ -25,30 +25,11 @@ public class ChatListStoreFactory(
             executorFactory = ::ExecutorImpl,
             reducer = { msg: Msg ->
                 when (msg) {
-                    is Msg.Loading -> {
-                        copy(isLoading = true, error = null)
-                    }
-
-                    is Msg.ChatsLoaded -> {
-                        copy(chats = msg.chats, isLoading = false)
-                    }
-
-                    is Msg.ChatCreated -> {
-                        copy(
-                            chats = chats + msg.chat,
-                            isLoading = false,
-                        )
-                    }
-
-                    is Msg.ChatDeleted -> {
-                        copy(
-                            chats = chats.filter { it.id != msg.id },
-                        )
-                    }
-
-                    is Msg.Error -> {
-                        copy(isLoading = false, error = msg.error)
-                    }
+                    is Msg.Loading -> copy(isLoading = true, error = null)
+                    is Msg.ChatsLoaded -> copy(chats = msg.chats, isLoading = false)
+                    is Msg.ChatCreated -> copy(chats = chats + msg.chat, isLoading = false)
+                    is Msg.ChatDeleted -> copy(chats = chats.filter { it.id != msg.id })
+                    is Msg.Error -> copy(isLoading = false, error = msg.error)
                 }
             },
         ) {}
@@ -71,7 +52,6 @@ public class ChatListStoreFactory(
                 is Intent.LoadChats -> loadChats()
                 is Intent.CreateNewChat -> createChat()
                 is Intent.DeleteChat -> dispatch(Msg.ChatDeleted(intent.id))
-                is Intent.SelectChat -> Unit
             }
         }
 

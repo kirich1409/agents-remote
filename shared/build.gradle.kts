@@ -18,10 +18,8 @@ kotlin {
     sourceSets {
         val commonMain by getting {
             dependencies {
-                implementation(libs.kotlin.stdlib)
                 implementation(libs.kotlinx.coroutines.core)
                 implementation(libs.kotlinx.serialization.json)
-                implementation(libs.kotlinx.datetime)
                 implementation(libs.sqldelight.runtime)
                 implementation(libs.koin.core)
                 implementation(libs.napier)

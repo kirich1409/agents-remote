@@ -12,9 +12,6 @@ public interface ChatListStore : Store<Intent, State, Nothing> {
         /** Intent to load all chats from the server. */
         public data object LoadChats : Intent
 
-        /** Intent to select a chat by its [id]. */
-        public data class SelectChat(val id: String) : Intent
-
         /** Intent to create a new chat session. */
         public data object CreateNewChat : Intent
 

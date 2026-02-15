@@ -17,14 +17,9 @@ public class ChatRepositoryImpl : ChatRepository {
 
     override suspend fun getChats(): Result<List<Chat>> = Result.success(chats.toList())
 
-    override suspend fun getChatById(id: String): Result<Chat> {
-        val chat = chats.find { it.id == id }
-        return if (chat != null) {
-            Result.success(chat)
-        } else {
-            Result.failure(Exception("Chat not found: $id"))
-        }
-    }
+    override suspend fun getChatById(id: String): Result<Chat> = chats.find { it.id == id }
+        ?.let { Result.success(it) }
+        ?: Result.failure(Exception("Chat not found: $id"))
 
     override suspend fun createChat(sessionId: String): Result<Chat> {
         val chat = Chat(sessionId = sessionId)
@@ -39,7 +34,7 @@ public class ChatRepositoryImpl : ChatRepository {
     }
 
     override suspend fun sendMessage(chatId: String, content: String): Result<Message> {
-        val chat = chats.find { it.id == chatId }
+        chats.find { it.id == chatId }
             ?: return Result.failure(Exception("Chat not found: $chatId"))
 
         val message = Message(
@@ -52,7 +47,7 @@ public class ChatRepositoryImpl : ChatRepository {
     }
 
     override suspend fun sendAssistantMessage(chatId: String, content: String): Result<Message> {
-        val chat = chats.find { it.id == chatId }
+        chats.find { it.id == chatId }
             ?: return Result.failure(Exception("Chat not found: $chatId"))
 
         val message = Message(

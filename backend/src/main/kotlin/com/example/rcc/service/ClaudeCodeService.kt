@@ -4,6 +4,7 @@ import com.example.rcc.config.AppConfig
 import io.github.aakira.napier.Napier
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.Json
+import java.io.File
 import java.util.concurrent.ConcurrentHashMap
 import java.util.concurrent.TimeUnit
 
@@ -55,8 +56,8 @@ public class ClaudeCodeService {
 
         val process = ProcessBuilder(command).apply {
             environment().remove("CLAUDECODE")
-            directory(java.io.File(System.getProperty("user.home")))
-            redirectInput(ProcessBuilder.Redirect.from(java.io.File("/dev/null")))
+            directory(File(System.getProperty("user.home")))
+            redirectInput(ProcessBuilder.Redirect.from(File("/dev/null")))
             redirectErrorStream(true)
         }.start()
 

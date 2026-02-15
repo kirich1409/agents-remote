@@ -53,8 +53,7 @@ public class WebSocketHandler {
      * @param session The WebSocket session to unsubscribe.
      */
     public fun unsubscribe(chatId: String, session: WebSocketSession) {
-        val sessions = connections[chatId]
-        if (sessions != null) {
+        connections[chatId]?.let { sessions ->
             sessions.remove(session)
             if (sessions.isEmpty()) {
                 connections.remove(chatId)
