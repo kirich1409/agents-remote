@@ -28,15 +28,19 @@ spotless {
 allprojects {
     // Global Kotlin compiler options for strict code quality
     tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile>().configureEach {
+        val isTestTask = name.contains("Test", ignoreCase = true)
         compilerOptions {
             jvmTarget.set(org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_21)
             allWarningsAsErrors.set(true)
             freeCompilerArgs.addAll(
-                "-Xexplicit-api=strict", // Require explicit API declarations
                 "-opt-in=kotlin.RequiresOptIn",
                 "-opt-in=kotlin.ExperimentalStdlibApi",
                 "-opt-in=kotlinx.coroutines.ExperimentalCoroutinesApi",
             )
+            // Apply explicit API mode only to non-test compilations
+            if (!isTestTask) {
+                freeCompilerArgs.add("-Xexplicit-api=strict")
+            }
         }
     }
 

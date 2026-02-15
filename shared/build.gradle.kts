@@ -15,19 +15,6 @@ kotlin {
     iosArm64()
     iosSimulatorArm64()
 
-    // Strict explicit API mode for main source sets only
-    targets.configureEach {
-        compilations.configureEach {
-            if (name == "main") {
-                compileTaskProvider.configure {
-                    compilerOptions {
-                        freeCompilerArgs.add("-Xexplicit-api=strict")
-                    }
-                }
-            }
-        }
-    }
-
     sourceSets {
         val commonMain by getting {
             dependencies {
