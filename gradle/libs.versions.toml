@@ -2,12 +2,11 @@
 # Gradle and Kotlin
 gradle = "8.14.4"
 kotlin = "2.3.10"
-agp = "8.7.3"
+agp = "8.13.2"
 ksp = "2.3.5"
 
 # Compose and UI
 compose = "1.10.1"
-composeCompiler = "1.5.11"
 
 # Android
 android-minSdk = "24"
@@ -22,32 +21,31 @@ ktor = "3.4.0"
 
 # Serialization
 kotlinx-serialization = "1.10.0"
-kotlinx-datetime = "0.7.1-0.6.x-compat"
+kotlinx-datetime = "0.7.1"
 
 # Architecture
-mvi-kotlin = "4.0.0"
-decompose = "2.2.2"
+mvi-kotlin = "4.3.0"
+decompose = "3.4.0"
 essenty = "2.5.0"
 
 # Database
 sqldelight = "2.2.1"
 
 # DI
-koin = "3.5.6"
+koin = "4.1.1"
 koin-annotations = "2.3.2"
 
 # Logging
 napier = "2.7.1"
-logback = "1.4.14"
+logback = "1.5.30"
 
 # Testing
 kotest = "6.1.3"
-mockk = "1.13.10"
+mockk = "1.14.7"
 kotlin-test = "0.8.1"
 
 # Code Quality
-detekt = "1.23.6"
-kotlinter = "4.4.1"
+detekt = "1.23.8"
 
 [libraries]
 # Kotlin
@@ -87,7 +85,7 @@ androidx-compose-ui = { module = "androidx.compose.ui:ui", version.ref = "compos
 androidx-compose-foundation = { module = "androidx.compose.foundation:foundation", version.ref = "compose" }
 androidx-compose-material3 = { module = "androidx.compose.material3:material3", version.ref = "compose" }
 androidx-compose-runtime = { module = "androidx.compose.runtime:runtime", version.ref = "compose" }
-androidx-activity-compose = { module = "androidx.activity:activity-compose", version = "1.8.1" }
+androidx-activity-compose = { module = "androidx.activity:activity-compose", version = "1.12.4" }
 
 # Decompose
 decompose = { module = "com.arkivanov.decompose:decompose", version.ref = "decompose" }
@@ -184,5 +182,4 @@ android-application = { id = "com.android.application", version.ref = "agp" }
 android-library = { id = "com.android.library", version.ref = "agp" }
 ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
 sqldelight = { id = "app.cash.sqldelight", version.ref = "sqldelight" }
-detekt = { id = "io.gitlab.arturbosch.detekt", version = "1.23.6" }
-kotlinter = { id = "org.jmailen.kotlinter", version = "4.4.1" }
+detekt = { id = "io.gitlab.arturbosch.detekt", version = "1.23.8" }

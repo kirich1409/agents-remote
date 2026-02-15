@@ -6,7 +6,6 @@ plugins {
     id("com.android.application")
     id("com.google.devtools.ksp")
     id("io.gitlab.arturbosch.detekt")
-    id("org.jmailen.kotlinter")
 }
 
 kotlin {
@@ -14,9 +13,8 @@ kotlin {
 
     androidTarget()
     jvm("desktop")
-    // iOS targets временно отключены (SQLDelight несовместим с Kotlin 2.3.10)
-    // iosArm64()
-    // iosSimulatorArm64()
+    iosArm64()
+    iosSimulatorArm64()
 
     // Strict explicit API mode for all targets
     explicitApi()
@@ -69,12 +67,12 @@ detekt {
 
 android {
     namespace = "com.example.rcc"
-    compileSdk = 34
+    compileSdk = 35
 
     defaultConfig {
         applicationId = "com.example.rcc"
         minSdk = 24
-        targetSdk = 34
+        targetSdk = 35
         versionCode = 1
         versionName = "1.0.0"
     }
@@ -99,5 +97,5 @@ compose.desktop {
 
 // Quality gates
 tasks.named("build") {
-    dependsOn("lintKotlin", "detekt")
+    dependsOn("detekt")
 }

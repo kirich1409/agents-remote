@@ -5,16 +5,16 @@
 repos:
   - repo: local
     hooks:
-      - id: ktlint-format
-        name: ktlint (format)
-        entry: ./gradlew ktlintFormat
+      - id: spotless-apply
+        name: spotless (format)
+        entry: ./gradlew spotlessApply
         language: system
         pass_filenames: false
         stages: [commit]
 
-      - id: ktlint-check
-        name: ktlint (check)
-        entry: ./gradlew ktlintCheck
+      - id: spotless-check
+        name: spotless (check)
+        entry: ./gradlew spotlessCheck
         language: system
         pass_filenames: false
         stages: [commit]

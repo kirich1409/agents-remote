@@ -5,7 +5,6 @@ plugins {
     id("com.google.devtools.ksp")
     id("app.cash.sqldelight")
     id("io.gitlab.arturbosch.detekt")
-    id("org.jmailen.kotlinter")
 }
 
 kotlin {
@@ -13,10 +12,8 @@ kotlin {
 
     androidTarget()
     jvm("backend")
-    // iOS targets временно отключены: SQLDelight 2.2.1 несовместим с Kotlin 2.3.10
-    // TODO: Включить когда выйдет совместимая версия SQLDelight
-    // iosArm64()
-    // iosSimulatorArm64()
+    iosArm64()
+    iosSimulatorArm64()
 
     // Strict explicit API mode for all targets
     explicitApi()
@@ -57,13 +54,12 @@ kotlin {
             }
         }
 
-        // iOS source set временно отключён
-        // val iosMain by creating {
-        //     dependencies {
-        //         implementation(libs.sqldelight.native.driver)
-        //         implementation(libs.ktor.client.darwin)
-        //     }
-        // }
+        val iosMain by creating {
+            dependencies {
+                implementation(libs.sqldelight.native.driver)
+                implementation(libs.ktor.client.darwin)
+            }
+        }
     }
 }
 
@@ -92,5 +88,5 @@ android {
 
 // Linting tasks
 tasks.named("build") {
-    dependsOn("lintKotlin", "detekt")
+    dependsOn("detekt")
 }
