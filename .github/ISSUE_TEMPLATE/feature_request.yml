@@ -1,0 +1,55 @@
+name: ✨ Feature Request
+description: Suggest a new feature or enhancement
+labels: ["enhancement", "needs-triage"]
+assignees:
+  - krozov
+body:
+  - type: markdown
+    attributes:
+      value: |
+        ## Thanks for the suggestion! ✨
+
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem / Use Case
+      description: What problem does this solve?
+    validations:
+      required: true
+
+  - type: textarea
+    id: solution
+    attributes:
+      label: Proposed Solution
+      description: How would you implement it?
+    validations:
+      required: true
+
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives Considered
+      description: Other approaches you thought about
+    validations:
+      required: false
+
+  - type: dropdown
+    id: phase
+    attributes:
+      label: Related Phase
+      options:
+        - "Phase 1: Infrastructure"
+        - "Phase 2: Domain Layer"
+        - "Phase 3: Backend"
+        - "Phase 4: Frontend"
+        - "Phase 5: Integration"
+        - "Phase 6: Deployment"
+        - "Future / Beyond MVP"
+
+  - type: checkboxes
+    id: checklist
+    attributes:
+      label: Checklist
+      options:
+        - label: I searched existing issues
+          required: true
