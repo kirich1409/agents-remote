@@ -15,10 +15,7 @@ import java.util.concurrent.ConcurrentHashMap
  * @property data The event data payload.
  */
 @Serializable
-public data class WebSocketEvent(
-    val type: String,
-    val data: String,
-)
+public data class WebSocketEvent(val type: String, val data: String)
 
 /**
  * Handler for managing WebSocket connections and broadcasting events.
@@ -39,10 +36,7 @@ public class WebSocketHandler {
      * @param chatId The chat identifier.
      * @param session The WebSocket session to subscribe.
      */
-    public fun subscribe(
-        chatId: String,
-        session: WebSocketSession,
-    ) {
+    public fun subscribe(chatId: String, session: WebSocketSession) {
         connections
             .computeIfAbsent(chatId) {
                 Collections.newSetFromMap(ConcurrentHashMap())
@@ -58,10 +52,7 @@ public class WebSocketHandler {
      * @param chatId The chat identifier.
      * @param session The WebSocket session to unsubscribe.
      */
-    public fun unsubscribe(
-        chatId: String,
-        session: WebSocketSession,
-    ) {
+    public fun unsubscribe(chatId: String, session: WebSocketSession) {
         val sessions = connections[chatId]
         if (sessions != null) {
             sessions.remove(session)
@@ -88,10 +79,7 @@ public class WebSocketHandler {
      * @param chatId The chat identifier to broadcast to.
      * @param event The event to broadcast.
      */
-    public suspend fun broadcast(
-        chatId: String,
-        event: WebSocketEvent,
-    ) {
+    public suspend fun broadcast(chatId: String, event: WebSocketEvent) {
         val sessions = connections[chatId]?.toList() ?: return
         val json = Json.encodeToString(WebSocketEvent.serializer(), event)
 

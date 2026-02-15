@@ -11,9 +11,7 @@ import com.example.rcc.domain.repository.ChatRepository
  *
  * @property repository Chat repository for data access.
  */
-public class SendMessageUseCase(
-    private val repository: ChatRepository,
-) {
+public class SendMessageUseCase(private val repository: ChatRepository) {
     /**
      * Sends a message to a chat.
      *
@@ -21,21 +19,17 @@ public class SendMessageUseCase(
      * @param content Text content of the message.
      * @return Result containing the created message, or failure if validation fails or operation failed.
      */
-    public suspend operator fun invoke(
-        chatId: String,
-        content: String,
-    ): Result<Message> =
-        try {
-            if (chatId.isBlank()) {
-                return Result.failure(ChatError.InvalidInput("Chat ID cannot be blank"))
-            }
-            if (content.isBlank()) {
-                return Result.failure(ChatError.InvalidInput("Message cannot be empty"))
-            }
-            repository.sendMessage(chatId, content)
-        } catch (e: kotlin.coroutines.cancellation.CancellationException) {
-            throw e
-        } catch (e: Exception) {
-            Result.failure(e)
+    public suspend operator fun invoke(chatId: String, content: String): Result<Message> = try {
+        if (chatId.isBlank()) {
+            return Result.failure(ChatError.InvalidInput("Chat ID cannot be blank"))
         }
+        if (content.isBlank()) {
+            return Result.failure(ChatError.InvalidInput("Message cannot be empty"))
+        }
+        repository.sendMessage(chatId, content)
+    } catch (e: kotlin.coroutines.cancellation.CancellationException) {
+        throw e
+    } catch (e: Exception) {
+        Result.failure(e)
+    }
 }

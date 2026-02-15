@@ -14,28 +14,20 @@ class ChatRepositoryTest {
             object : ChatRepository {
                 override suspend fun getChats() = Result.success(emptyList<Chat>())
 
-                override suspend fun getChatById(id: String) =
-                    Result.success(
-                        Chat(sessionId = "session-1"),
-                    )
+                override suspend fun getChatById(id: String) = Result.success(
+                    Chat(sessionId = "session-1"),
+                )
 
-                override suspend fun createChat(sessionId: String) =
-                    Result.success(
-                        Chat(sessionId = sessionId),
-                    )
+                override suspend fun createChat(sessionId: String) = Result.success(
+                    Chat(sessionId = sessionId),
+                )
 
                 override suspend fun deleteChat(id: String) = Result.success(Unit)
 
-                override suspend fun getMessages(
-                    chatId: String,
-                    limit: Int,
-                    offset: Int,
-                ) = Result.success(emptyList<Message>())
+                override suspend fun getMessages(chatId: String, limit: Int, offset: Int) =
+                    Result.success(emptyList<Message>())
 
-                override suspend fun sendMessage(
-                    chatId: String,
-                    content: String,
-                ) = Result.success(
+                override suspend fun sendMessage(chatId: String, content: String) = Result.success(
                     Message(chatId = chatId, role = MessageRole.USER, content = content),
                 )
             }

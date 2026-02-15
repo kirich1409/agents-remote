@@ -17,7 +17,6 @@ private const val DATABASE_NAME = "rcc-backend.db"
  *
  * @return JVM-specific SQL driver.
  */
-public actual fun createDriver(): SqlDriver =
-    JdbcSqliteDriver(JdbcSqliteDriver.IN_MEMORY).apply {
-        RemoteCloudCodeDb.Schema.create(this)
-    }
+public actual fun createDriver(): SqlDriver = JdbcSqliteDriver(JdbcSqliteDriver.IN_MEMORY).apply {
+    RemoteCloudCodeDb.Schema.create(this)
+}

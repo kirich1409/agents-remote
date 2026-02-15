@@ -48,10 +48,7 @@ public interface ChatRepository {
      * @param content Text content of the message.
      * @return Result containing the created message, or failure if operation failed.
      */
-    public suspend fun sendMessage(
-        chatId: String,
-        content: String,
-    ): Result<Message>
+    public suspend fun sendMessage(chatId: String, content: String): Result<Message>
 
     /**
      * Retrieves messages from a chat with pagination.
@@ -61,9 +58,5 @@ public interface ChatRepository {
      * @param offset Number of messages to skip (default 0).
      * @return Result containing list of messages, or failure if operation failed.
      */
-    public suspend fun getMessages(
-        chatId: String,
-        limit: Int = 100,
-        offset: Int = 0,
-    ): Result<List<Message>>
+    public suspend fun getMessages(chatId: String, limit: Int = 100, offset: Int = 0): Result<List<Message>>
 }

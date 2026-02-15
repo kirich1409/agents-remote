@@ -8,20 +8,17 @@ import com.example.rcc.domain.repository.ChatRepository
  *
  * @property repository Chat repository for data access.
  */
-public class GetChatsUseCase(
-    private val repository: ChatRepository,
-) {
+public class GetChatsUseCase(private val repository: ChatRepository) {
     /**
      * Retrieves all chats.
      *
      * @return Result containing list of chats, or failure if operation failed.
      */
-    public suspend operator fun invoke(): Result<List<Chat>> =
-        try {
-            repository.getChats()
-        } catch (e: kotlin.coroutines.cancellation.CancellationException) {
-            throw e
-        } catch (e: Exception) {
-            Result.failure(e)
-        }
+    public suspend operator fun invoke(): Result<List<Chat>> = try {
+        repository.getChats()
+    } catch (e: kotlin.coroutines.cancellation.CancellationException) {
+        throw e
+    } catch (e: Exception) {
+        Result.failure(e)
+    }
 }
