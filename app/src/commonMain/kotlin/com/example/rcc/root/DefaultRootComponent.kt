@@ -34,17 +34,11 @@ internal class DefaultRootComponent(componentContext: ComponentContext) :
     }
 
     private fun createChild(config: Config, componentContext: ComponentContext): RootComponent.Child = when (config) {
-        is Config.ChatList -> {
-            RootComponent.Child.ChatListChild(
-                chatListComponent(componentContext),
-            )
-        }
+        is Config.ChatList -> RootComponent.Child.ChatListChild(chatListComponent(componentContext))
 
-        is Config.ChatDetail -> {
-            RootComponent.Child.ChatDetailChild(
-                chatDetailComponent(componentContext, config.chatId),
-            )
-        }
+        is Config.ChatDetail -> RootComponent.Child.ChatDetailChild(
+            chatDetailComponent(componentContext, config.chatId),
+        )
     }
 
     private fun chatListComponent(componentContext: ComponentContext): ChatListComponent = DefaultChatListComponent(

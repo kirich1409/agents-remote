@@ -28,39 +28,12 @@ public class ChatDetailStoreFactory(
             executorFactory = { ExecutorImpl(chatId) },
             reducer = { msg: Msg ->
                 when (msg) {
-                    is Msg.Loading -> {
-                        copy(isLoading = true, error = null)
-                    }
-
-                    is Msg.MessagesLoaded -> {
-                        copy(
-                            messages = msg.messages,
-                            isLoading = false,
-                        )
-                    }
-
-                    is Msg.Sending -> {
-                        copy(isSending = true)
-                    }
-
-                    is Msg.UserMessageAdded -> {
-                        copy(messages = messages + msg.message)
-                    }
-
-                    is Msg.MessageSent -> {
-                        copy(
-                            messages = messages + msg.message,
-                            isSending = false,
-                        )
-                    }
-
-                    is Msg.Error -> {
-                        copy(
-                            isLoading = false,
-                            isSending = false,
-                            error = msg.error,
-                        )
-                    }
+                    is Msg.Loading -> copy(isLoading = true, error = null)
+                    is Msg.MessagesLoaded -> copy(messages = msg.messages, isLoading = false)
+                    is Msg.Sending -> copy(isSending = true)
+                    is Msg.UserMessageAdded -> copy(messages = messages + msg.message)
+                    is Msg.MessageSent -> copy(messages = messages + msg.message, isSending = false)
+                    is Msg.Error -> copy(isLoading = false, isSending = false, error = msg.error)
                 }
             },
         ) {}
