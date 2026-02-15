@@ -1,7 +1,6 @@
 plugins {
     kotlin("jvm")
     kotlin("plugin.serialization")
-    id("com.google.devtools.ksp")
     id("io.gitlab.arturbosch.detekt")
 }
 
@@ -19,7 +18,6 @@ dependencies {
     implementation(libs.koin.core)
     implementation(libs.koin.ktor)
     implementation(libs.logback.classic)
-    implementation(libs.koin.annotations)
     implementation(libs.napier)
     implementation(libs.kotlinx.coroutines.core)
     implementation(libs.kotlinx.serialization.json)
@@ -29,10 +27,7 @@ dependencies {
     testImplementation(libs.ktor.server.test.host)
     testImplementation(libs.kotest.assertions)
     testImplementation(libs.mockk)
-}
-
-ksp {
-    arg("KOIN_CONFIG_CHECK", "true")
+    testImplementation(libs.kotlinx.coroutines.test)
 }
 
 detekt {

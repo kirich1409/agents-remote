@@ -46,33 +46,15 @@ public fun Application.configureChatWebSocketRoutes() {
     }
 }
 
-/**
- * Defines all chat API routes.
- *
- * Routes:
- * - GET /api/chats - Retrieve all chats
- * - POST /api/chats - Create a new chat
- * - DELETE /api/chats/{id} - Delete a chat
- * - POST /api/chats/{chatId}/messages - Send a message to a chat
- * - GET /api/chats/{chatId}/messages - Get messages in a chat (reserved for future)
- *
- * @param chatHandler The chat handler for processing requests.
- */
 private fun Route.chatRoutes(chatHandler: ChatHandler) {
     route("/api/chats") {
-        /**
-         * GET /api/chats
-         *
-         * Retrieves all chats.
-         *
-         * Returns: 200 OK with list of ChatResponse objects
-         */
+        // GET /api/chats - Retrieves all chats
         get {
-            chatHandler.getChats()
+            chatHandler
+                .getChats()
                 .onSuccess { chats ->
                     call.respond(HttpStatusCode.OK, chats)
-                }
-                .onFailure { error ->
+                }.onFailure { error ->
                     call.respond(
                         HttpStatusCode.InternalServerError,
                         ErrorResponse(
@@ -83,21 +65,14 @@ private fun Route.chatRoutes(chatHandler: ChatHandler) {
                 }
         }
 
-        /**
-         * POST /api/chats
-         *
-         * Creates a new chat.
-         *
-         * Request body: CreateChatRequest with sessionId
-         * Returns: 201 Created with ChatResponse
-         */
+        // POST /api/chats - Creates a new chat
         post {
             val request = call.receive<CreateChatRequest>()
-            chatHandler.createChat(request.sessionId)
+            chatHandler
+                .createChat(request.sessionId)
                 .onSuccess { chat ->
                     call.respond(HttpStatusCode.Created, chat)
-                }
-                .onFailure { error ->
+                }.onFailure { error ->
                     call.respond(
                         HttpStatusCode.BadRequest,
                         ErrorResponse(
@@ -108,36 +83,23 @@ private fun Route.chatRoutes(chatHandler: ChatHandler) {
                 }
         }
 
-        /**
-         * DELETE /api/chats/{id}
-         *
-         * Deletes a chat by ID.
-         *
-         * Returns: 204 No Content on success
-         */
+        // DELETE /api/chats/{id} - Deletes a chat by ID
         delete("{id}") {
             val chatId = call.parameters["id"] ?: ""
-            // TODO: Implement deleteChat in ChatHandler and use case
+            // Delete chat not yet implemented
             call.respond(HttpStatusCode.NoContent)
         }
 
-        /**
-         * POST /api/chats/{chatId}/messages
-         *
-         * Sends a message to a chat.
-         *
-         * Request body: SendMessageRequest with content
-         * Returns: 200 OK with MessageResponse
-         */
+        // POST /api/chats/{chatId}/messages - Sends a message to a chat
         route("{chatId}/messages") {
             post {
                 val chatId = call.parameters["chatId"] ?: ""
                 val request = call.receive<SendMessageRequest>()
-                chatHandler.sendMessage(chatId, request.content)
+                chatHandler
+                    .sendMessage(chatId, request.content)
                     .onSuccess { message ->
                         call.respond(HttpStatusCode.OK, message)
-                    }
-                    .onFailure { error ->
+                    }.onFailure { error ->
                         call.respond(
                             HttpStatusCode.BadRequest,
                             ErrorResponse(
@@ -148,42 +110,19 @@ private fun Route.chatRoutes(chatHandler: ChatHandler) {
                     }
             }
 
-            /**
-             * GET /api/chats/{chatId}/messages
-             *
-             * Retrieves messages in a chat.
-             *
-             * Returns: 200 OK with list of MessageResponse objects
-             */
+            // GET /api/chats/{chatId}/messages - Retrieves messages in a chat
             get {
                 val chatId = call.parameters["chatId"] ?: ""
-                // TODO: Implement getMessages in ChatHandler and use case
+                // Get messages not yet implemented
                 call.respond(HttpStatusCode.OK, emptyList<String>())
             }
         }
     }
 }
 
-/**
- * Defines chat WebSocket routes.
- *
- * Routes:
- * - WS /ws/chats/{chatId} - WebSocket connection for real-time chat messaging
- *
- * @param webSocketHandler The WebSocket handler for managing connections.
- */
 private fun Route.chatWebSocketRoutes(webSocketHandler: WebSocketHandler) {
     route("/ws/chats") {
-        /**
-         * WS /ws/chats/{chatId}
-         *
-         * Establishes a WebSocket connection for a chat.
-         *
-         * Operations:
-         * - Subscribes the client to real-time messages for the chat
-         * - Receives incoming events and broadcasts to all connected clients
-         * - Unsubscribes when connection closes
-         */
+        // WS /ws/chats/{chatId} - WebSocket connection for real-time chat messaging
         webSocket("{chatId}") {
             val chatId = call.parameters["chatId"] ?: return@webSocket
 
@@ -191,10 +130,11 @@ private fun Route.chatWebSocketRoutes(webSocketHandler: WebSocketHandler) {
 
             try {
                 for (message in incoming) {
-                    val event = WebSocketEvent(
-                        type = "message",
-                        data = message.data.toString(Charsets.UTF_8),
-                    )
+                    val event =
+                        WebSocketEvent(
+                            type = "message",
+                            data = message.data.toString(Charsets.UTF_8),
+                        )
                     webSocketHandler.broadcast(chatId, event)
                 }
             } finally {

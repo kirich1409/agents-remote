@@ -9,8 +9,8 @@ import io.ktor.server.application.Application
 import io.ktor.server.application.install
 import io.ktor.server.cio.CIO
 import io.ktor.server.engine.embeddedServer
-import org.koin.ktor.plugin.Koin
 import org.koin.core.context.startKoin
+import org.koin.ktor.plugin.Koin
 
 /**
  * Application entry point.

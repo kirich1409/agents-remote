@@ -6,6 +6,8 @@ package com.example.rcc.config
  * Loads settings from environment variables.
  */
 public object AppConfig {
+    private const val DEFAULT_GATEWAY_PORT = 3000
+
     /**
      * Authentication token for Cloud Code sessions.
      */
@@ -14,7 +16,7 @@ public object AppConfig {
     /**
      * Gateway server port.
      */
-    public val gatewayPort: Int = System.getenv("GATEWAY_PORT")?.toIntOrNull() ?: 3000
+    public val gatewayPort: Int = System.getenv("GATEWAY_PORT")?.toIntOrNull() ?: DEFAULT_GATEWAY_PORT
 
     /**
      * Logging level.

@@ -16,22 +16,11 @@ import io.ktor.server.routing.routing
  */
 public fun Application.configureRouting() {
     routing {
-        /**
-         * GET /health
-         *
-         * Health check endpoint to verify server is running.
-         * Returns: 200 OK with "OK" text response.
-         */
+        // GET /health - Health check endpoint
         get("/health") {
             call.respondText("OK")
         }
     }
 
-    /**
-     * Configure chat-related routes.
-     *
-     * Registers all chat API endpoints under /api/chats path.
-     * Requires ChatHandler to be available in the DI container.
-     */
     configureChatRoutes()
 }

@@ -17,50 +17,17 @@ import org.koin.dsl.module
  * - Use cases for business logic
  * - Handler for request processing
  */
-public val appModule =
+public val appModule: org.koin.core.module.Module =
     module {
         // Repository bindings
-        /**
-         * Provides ChatRepository implementation.
-         *
-         * Binds the ChatRepository interface to ChatRepositoryImpl for in-memory
-         * chat data management. Single instance shared across the application.
-         */
         single<ChatRepository> { ChatRepositoryImpl() }
 
         // Use case bindings
-        /**
-         * Provides GetChatsUseCase.
-         *
-         * Depends on ChatRepository for retrieving all chats.
-         * Handles business logic for fetching chat data with error handling.
-         */
         single { GetChatsUseCase(get()) }
-
-        /**
-         * Provides CreateChatUseCase.
-         *
-         * Depends on ChatRepository for creating new chats.
-         * Validates session ID and handles chat creation with error handling.
-         */
         single { CreateChatUseCase(get()) }
-
-        /**
-         * Provides SendMessageUseCase.
-         *
-         * Depends on ChatRepository for sending messages.
-         * Validates chat ID and message content with error handling.
-         */
         single { SendMessageUseCase(get()) }
 
         // Handler bindings
-        /**
-         * Provides ChatHandler.
-         *
-         * Orchestrates chat operations by delegating to use cases.
-         * Converts domain entities to DTOs for API responses.
-         * Depends on all chat use cases.
-         */
         single {
             ChatHandler(
                 getChatsUseCase = get(),
@@ -68,13 +35,5 @@ public val appModule =
                 sendMessageUseCase = get(),
             )
         }
-
-        /**
-         * Provides WebSocketHandler.
-         *
-         * Manages WebSocket connections and broadcasts events to connected clients.
-         * Maintains registry of active connections grouped by chat ID.
-         * Single instance shared across the application.
-         */
         single { WebSocketHandler() }
     }

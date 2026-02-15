@@ -14,9 +14,9 @@ import com.example.rcc.features.chat.dto.MessageResponse
  * Provides methods to handle chat CRUD operations and messaging by delegating
  * to the appropriate use cases.
  *
- * @property getChatsUseCase Use case for retrieving all chats.
- * @property createChatUseCase Use case for creating a new chat.
- * @property sendMessageUseCase Use case for sending messages to a chat.
+ * @param getChatsUseCase Use case for retrieving all chats.
+ * @param createChatUseCase Use case for creating a new chat.
+ * @param sendMessageUseCase Use case for sending messages to a chat.
  */
 public class ChatHandler(
     private val getChatsUseCase: GetChatsUseCase,
@@ -59,9 +59,6 @@ public class ChatHandler(
             message.toResponse()
         }
 
-    /**
-     * Converts a Chat entity to a ChatResponse DTO.
-     */
     private fun Chat.toResponse(): ChatResponse =
         ChatResponse(
             id = id,
@@ -71,9 +68,6 @@ public class ChatHandler(
             title = title,
         )
 
-    /**
-     * Converts a Message entity to a MessageResponse DTO.
-     */
     private fun Message.toResponse(): MessageResponse =
         MessageResponse(
             id = id,

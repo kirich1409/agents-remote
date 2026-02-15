@@ -1,5 +1,6 @@
 package com.example.rcc.features.chat
 
+import io.ktor.websocket.Frame
 import io.ktor.websocket.WebSocketSession
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.Json
@@ -24,10 +25,6 @@ public data class WebSocketEvent(
  * Handles subscription, unsubscription, and broadcasting of real-time events.
  */
 public class WebSocketHandler {
-    /**
-     * Map of chat ID to collection of active WebSocket sessions.
-     * Uses ConcurrentHashMap for thread-safe concurrent access.
-     */
     private val connections: MutableMap<String, MutableSet<WebSocketSession>> =
         ConcurrentHashMap()
 
@@ -75,8 +72,7 @@ public class WebSocketHandler {
      * @param chatId The chat identifier.
      * @return Set of WebSocket sessions connected to the chat.
      */
-    public fun getConnections(chatId: String): Set<WebSocketSession> =
-        connections[chatId].orEmpty()
+    public fun getConnections(chatId: String): Set<WebSocketSession> = connections[chatId].orEmpty()
 
     /**
      * Broadcasts a WebSocket event to all connections in a chat.
@@ -98,7 +94,7 @@ public class WebSocketHandler {
 
         for (session in sessions) {
             try {
-                session.send(json)
+                session.send(Frame.Text(json))
             } catch (e: Exception) {
                 failedSessions.add(session)
             }
@@ -114,8 +110,7 @@ public class WebSocketHandler {
      * @param chatId The chat identifier.
      * @return Number of active WebSocket sessions for the chat.
      */
-    public fun getConnectionCount(chatId: String): Int =
-        connections[chatId]?.size ?: 0
+    public fun getConnectionCount(chatId: String): Int = connections[chatId]?.size ?: 0
 
     /**
      * Clears all connections (useful for testing or shutdown).

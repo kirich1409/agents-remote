@@ -4,10 +4,10 @@ import com.example.rcc.domain.entity.Chat
 import com.example.rcc.domain.usecase.CreateChatUseCase
 import com.example.rcc.domain.usecase.GetChatsUseCase
 import com.example.rcc.domain.usecase.SendMessageUseCase
-import io.kotest.assertions.throwables.shouldNotThrow
 import io.kotest.matchers.shouldBe
 import io.mockk.coEvery
 import io.mockk.mockk
+import kotlinx.coroutines.test.runTest
 import kotlin.test.Test
 
 /**
@@ -32,7 +32,7 @@ public class ChatHandlerTest {
      */
     @Test
     public fun testGetChatsSuccess() =
-        shouldNotThrow {
+        runTest {
             val mockChats =
                 listOf(
                     Chat(
@@ -46,7 +46,7 @@ public class ChatHandlerTest {
 
             coEvery { getChatsUseCase() } returns Result.success(mockChats)
 
-            val result: Result<List<*>> = chatHandler.getChats()
+            val result = chatHandler.getChats()
 
             result.isSuccess shouldBe true
             result.getOrNull()?.size shouldBe 1
@@ -57,12 +57,12 @@ public class ChatHandlerTest {
      */
     @Test
     public fun testGetChatsFailure() =
-        shouldNotThrow {
+        runTest {
             val exception = Exception("Database error")
 
             coEvery { getChatsUseCase() } returns Result.failure(exception)
 
-            val result: Result<List<*>> = chatHandler.getChats()
+            val result = chatHandler.getChats()
 
             result.isFailure shouldBe true
         }
