@@ -1,7 +1,7 @@
 # detekt.yml
 config:
-  validation: false
-  warningsAsErrors: false
+  validation: true
+  warningsAsErrors: true
 
 processors:
   active: true
@@ -23,16 +23,21 @@ comments:
 
 complexity:
   active: true
-  CyclomaticComplexity:
+  CyclomaticComplexMethod:
     threshold: 15
   LongMethod:
     threshold: 100
   LongParameterList:
-    threshold: 5
+    functionThreshold: 5
+    constructorThreshold: 5
   NestedBlockDepth:
     threshold: 4
   TooManyFunctions:
-    threshold: 15
+    thresholdInFiles: 15
+    thresholdInClasses: 15
+    thresholdInInterfaces: 15
+    thresholdInObjects: 15
+    thresholdInEnums: 15
 
 coroutines:
   active: true
@@ -57,19 +62,6 @@ exceptions:
   PrintStackTrace:
     active: true
 
-formatting:
-  active: true
-  Indentation:
-    active: true
-  MaximumLineLength:
-    maxLineLength: 120
-  NoMultipleSpaces:
-    active: true
-  NoTrailingSpaces:
-    active: true
-  NoUnusedImports:
-    active: true
-
 naming:
   active: true
   ClassNaming:
@@ -85,8 +77,6 @@ naming:
 
 performance:
   active: true
-  ForEachOnSequence:
-    active: true
   SpreadOperator:
     active: true
   UnnecessaryTemporaryInstantiation:
@@ -94,10 +84,6 @@ performance:
 
 potential-bugs:
   active: true
-  DuplicateCaseInWhenExpression:
-    active: true
-  EqualsAlwaysReturnsTrue:
-    active: true
   EqualsWithHashCodeExist:
     active: true
   HasPlatformType:
@@ -121,23 +107,25 @@ style:
     active: true
   ForbiddenComment:
     active: true
-    values: ['FIXME', 'HACK', 'TODO', 'NOTE']
+    comments:
+      - reason: 'FIXME markers should be resolved before merge.'
+        value: 'FIXME:'
+      - reason: 'HACK markers indicate poor solutions.'
+        value: 'HACK:'
+      - reason: 'TODO markers should be resolved before merge.'
+        value: 'TODO:'
   MagicNumber:
     active: true
-    excludedNumbers: ['-1', '0', '1', '2']
+    ignoreNumbers: ['-1', '0', '1', '2']
   MandatoryBracesLoops:
     active: true
   MaxChainedCallsOnSameLine:
     maxChainedCalls: 3
   MultilineLambdaItParameter:
     active: true
-  NoCloneable:
-    active: true
   PreferToOverPairSyntax:
     active: true
   RedundantHigherOrderMapUsage:
-    active: true
-  StringTemplate:
     active: true
   UnderscoresInNumericLiterals:
     active: true
@@ -147,7 +135,7 @@ style:
     active: true
   UnusedPrivateMember:
     active: true
-  UseArrayLiteral:
+  UseArrayLiteralsInAnnotations:
     active: true
   UseCheckNotNull:
     active: true
