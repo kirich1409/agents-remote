@@ -16,7 +16,11 @@ spotless {
     kotlin {
         target("**/*.kt")
         targetExclude("**/build/**", ".worktrees/**")
-        ktlint()
+        ktlint().editorConfigOverride(
+            mapOf(
+                "ktlint_function_naming_ignore_when_annotated_with" to "Composable",
+            ),
+        )
     }
     kotlinGradle {
         target("**/*.gradle.kts")
@@ -53,7 +57,7 @@ allprojects {
 tasks.register("detekt") {
     dependsOn(":shared:detekt")
     dependsOn(":backend:detekt")
-    // dependsOn(":app:detekt")  // Временно отключён (Phase 4)
+    dependsOn(":app:detekt")
     description = "Run detekt static analysis on all modules"
 }
 

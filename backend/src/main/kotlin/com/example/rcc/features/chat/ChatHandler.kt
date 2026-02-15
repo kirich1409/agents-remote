@@ -28,10 +28,9 @@ public class ChatHandler(
      *
      * @return Result containing list of chat responses, or failure if operation failed.
      */
-    public suspend fun getChats(): Result<List<ChatResponse>> =
-        getChatsUseCase().mapCatching { chats ->
-            chats.map { it.toResponse() }
-        }
+    public suspend fun getChats(): Result<List<ChatResponse>> = getChatsUseCase().mapCatching { chats ->
+        chats.map { it.toResponse() }
+    }
 
     /**
      * Creates a new chat for a session.
@@ -51,29 +50,24 @@ public class ChatHandler(
      * @param content Text content of the message.
      * @return Result containing the created message response, or failure if validation fails or operation failed.
      */
-    public suspend fun sendMessage(
-        chatId: String,
-        content: String,
-    ): Result<MessageResponse> =
+    public suspend fun sendMessage(chatId: String, content: String): Result<MessageResponse> =
         sendMessageUseCase(chatId, content).mapCatching { message ->
             message.toResponse()
         }
 
-    private fun Chat.toResponse(): ChatResponse =
-        ChatResponse(
-            id = id,
-            sessionId = sessionId,
-            createdAt = createdAt,
-            lastActivity = lastActivity,
-            title = title,
-        )
+    private fun Chat.toResponse(): ChatResponse = ChatResponse(
+        id = id,
+        sessionId = sessionId,
+        createdAt = createdAt,
+        lastActivity = lastActivity,
+        title = title,
+    )
 
-    private fun Message.toResponse(): MessageResponse =
-        MessageResponse(
-            id = id,
-            chatId = chatId,
-            role = role.name,
-            content = content,
-            timestamp = timestamp,
-        )
+    private fun Message.toResponse(): MessageResponse = MessageResponse(
+        id = id,
+        chatId = chatId,
+        role = role.name,
+        content = content,
+        timestamp = timestamp,
+    )
 }

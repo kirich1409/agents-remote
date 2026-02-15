@@ -8,9 +8,7 @@ import kotlinx.serialization.Serializable
  * @property sessionId Cloud Code session identifier for the new chat.
  */
 @Serializable
-public data class CreateChatRequest(
-    val sessionId: String,
-)
+public data class CreateChatRequest(val sessionId: String)
 
 /**
  * Response DTO for chat information.
@@ -38,9 +36,7 @@ public data class ChatResponse(
  * @property content Text content of the message to send.
  */
 @Serializable
-public data class SendMessageRequest(
-    val content: String,
-)
+public data class SendMessageRequest(val content: String)
 
 /**
  * Response DTO for message information.
@@ -71,7 +67,4 @@ public data class MessageResponse(
  * @property details Optional additional details about the error.
  */
 @Serializable
-public data class ErrorResponse(
-    val error: String,
-    val details: String? = null,
-)
+public data class ErrorResponse(val error: String, val details: String? = null)

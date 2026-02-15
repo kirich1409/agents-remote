@@ -49,10 +49,8 @@ public class ChatRepositoryImpl : ChatRepository {
      * @param content Message content.
      * @return Failure (not implemented).
      */
-    override suspend fun sendMessage(
-        chatId: String,
-        content: String,
-    ): Result<Message> = Result.failure(Exception("Not implemented"))
+    override suspend fun sendMessage(chatId: String, content: String): Result<Message> =
+        Result.failure(Exception("Not implemented"))
 
     /**
      * Retrieves messages.
@@ -62,9 +60,6 @@ public class ChatRepositoryImpl : ChatRepository {
      * @param offset Offset for pagination.
      * @return Empty list (stub implementation).
      */
-    override suspend fun getMessages(
-        chatId: String,
-        limit: Int,
-        offset: Int,
-    ): Result<List<Message>> = Result.success(emptyList())
+    override suspend fun getMessages(chatId: String, limit: Int, offset: Int): Result<List<Message>> =
+        Result.success(emptyList())
 }

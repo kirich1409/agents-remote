@@ -31,39 +31,37 @@ public class ChatHandlerTest {
      * Test: getChats returns list of chats successfully.
      */
     @Test
-    public fun testGetChatsSuccess() =
-        runTest {
-            val mockChats =
-                listOf(
-                    Chat(
-                        id = "chat-1",
-                        sessionId = "session-1",
-                        createdAt = 1000L,
-                        lastActivity = 2000L,
-                        title = "Test Chat",
-                    ),
-                )
+    public fun testGetChatsSuccess() = runTest {
+        val mockChats =
+            listOf(
+                Chat(
+                    id = "chat-1",
+                    sessionId = "session-1",
+                    createdAt = 1000L,
+                    lastActivity = 2000L,
+                    title = "Test Chat",
+                ),
+            )
 
-            coEvery { getChatsUseCase() } returns Result.success(mockChats)
+        coEvery { getChatsUseCase() } returns Result.success(mockChats)
 
-            val result = chatHandler.getChats()
+        val result = chatHandler.getChats()
 
-            result.isSuccess shouldBe true
-            result.getOrNull()?.size shouldBe 1
-        }
+        result.isSuccess shouldBe true
+        result.getOrNull()?.size shouldBe 1
+    }
 
     /**
      * Test: getChats handles failures gracefully.
      */
     @Test
-    public fun testGetChatsFailure() =
-        runTest {
-            val exception = Exception("Database error")
+    public fun testGetChatsFailure() = runTest {
+        val exception = Exception("Database error")
 
-            coEvery { getChatsUseCase() } returns Result.failure(exception)
+        coEvery { getChatsUseCase() } returns Result.failure(exception)
 
-            val result = chatHandler.getChats()
+        val result = chatHandler.getChats()
 
-            result.isFailure shouldBe true
-        }
+        result.isFailure shouldBe true
+    }
 }

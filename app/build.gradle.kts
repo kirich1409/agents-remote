@@ -24,9 +24,13 @@ kotlin {
             dependencies {
                 implementation(project(":shared"))
 
-                implementation(libs.bundles.compose)
+                implementation(compose.material3)
+                implementation(compose.materialIconsExtended)
+                implementation(compose.foundation)
+                implementation(compose.ui)
+                implementation(compose.runtime)
                 implementation(libs.decompose)
-                implementation(libs.decompose.compose)
+                implementation(libs.decompose.extensions.compose)
                 implementation(libs.bundles.mvikotlin)
                 implementation(libs.essenty.lifecycle)
                 implementation(libs.koin.core)
@@ -63,11 +67,16 @@ kotlin {
 detekt {
     config.setFrom(files("${rootProject.projectDir}/detekt.yml"))
     baseline = file("${rootProject.projectDir}/detekt-baseline.xml")
+    source.setFrom(
+        "src/commonMain/kotlin",
+        "src/androidMain/kotlin",
+        "src/desktopMain/kotlin",
+    )
 }
 
 android {
     namespace = "com.example.rcc"
-    compileSdk = 35
+    compileSdk = 36
 
     defaultConfig {
         applicationId = "com.example.rcc"

@@ -32,10 +32,9 @@ public fun initializeDatabaseContext(context: Context) {
  * @return Application context.
  * @throws IllegalStateException if context not initialized.
  */
-private fun requireAppContext(): Context =
-    checkNotNull(appContextHolder) {
-        "Database context not initialized. Call initializeDatabaseContext() first."
-    }
+private fun requireAppContext(): Context = checkNotNull(appContextHolder) {
+    "Database context not initialized. Call initializeDatabaseContext() first."
+}
 
 /**
  * Creates Android SQLite driver.
