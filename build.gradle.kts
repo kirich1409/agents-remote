@@ -10,6 +10,7 @@ plugins {
     id("app.cash.sqldelight") version "2.2.1" apply false
     id("io.gitlab.arturbosch.detekt") version "1.23.8" apply false
     id("io.ktor.plugin") version "3.4.0" apply false
+    alias(libs.plugins.kover) apply false
 }
 
 allprojects {
@@ -38,5 +39,19 @@ tasks.register("detekt") {
     dependsOn(":backend:detekt")
     dependsOn(":app:detekt")
     description = "Run detekt static analysis on all modules"
+}
+
+tasks.register("koverHtmlReportAll") {
+    group = "verification"
+    description = "Generate Kover HTML coverage report for all modules"
+    dependsOn(":shared:koverHtmlReport")
+    dependsOn(":backend:koverHtmlReport")
+}
+
+tasks.register("koverVerifyAll") {
+    group = "verification"
+    description = "Verify code coverage for all modules"
+    dependsOn(":shared:koverVerify")
+    dependsOn(":backend:koverVerify")
 }
 

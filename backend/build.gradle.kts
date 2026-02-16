@@ -4,6 +4,7 @@ plugins {
     id("io.ktor.plugin")
     alias(libs.plugins.koin.compiler)
     id("io.gitlab.arturbosch.detekt")
+    alias(libs.plugins.kover)
 }
 
 application {
@@ -54,4 +55,24 @@ tasks.test {
 
 tasks.named("build") {
     dependsOn("test")
+}
+
+dependencies {
+    kover(project(":shared"))
+}
+
+kover.reports {
+    filters {
+        excludes.classes(
+            "com.example.rcc.config.*",
+            "com.example.rcc.plugins.*",
+            "com.example.rcc.ApplicationKt",
+            "*Dto",
+            "*Config",
+            "*Module",
+            "*Kt"
+        )
+        excludes.annotatedBy("*Generated*")
+        includes.classes("com.example.rcc.*")
+    }
 }
