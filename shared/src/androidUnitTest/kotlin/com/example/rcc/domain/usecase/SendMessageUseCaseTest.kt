@@ -7,6 +7,8 @@ import io.kotest.matchers.shouldBe
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.mockk
+import kotlinx.coroutines.async
+import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.test.runTest
 import kotlin.test.Test
 
@@ -243,5 +245,62 @@ class SendMessageUseCaseTest {
 
         // Then
         result.isFailure shouldBe true
+    }
+
+    @Test
+    fun `should handle concurrent messages to different chats`() = runTest {
+        // Given
+        val chatId1 = "chat-1"
+        val chatId2 = "chat-2"
+        val content1 = "Message 1"
+        val content2 = "Message 2"
+
+        val message1 = Message(chatId = chatId1, role = MessageRole.USER, content = content1)
+        val message2 = Message(chatId = chatId2, role = MessageRole.USER, content = content2)
+
+        coEvery { repository.sendMessage(chatId1, content1) } returns Result.success(message1)
+        coEvery { repository.sendMessage(chatId2, content2) } returns Result.success(message2)
+
+        // When
+        val deferred1 = async { useCase(chatId1, content1) }
+        val deferred2 = async { useCase(chatId2, content2) }
+        val result1 = deferred1.await()
+        val result2 = deferred2.await()
+
+        // Then
+        result1.isSuccess shouldBe true
+        result2.isSuccess shouldBe true
+        result1.getOrNull()?.chatId shouldBe chatId1
+        result2.getOrNull()?.chatId shouldBe chatId2
+    }
+
+    @Test
+    fun `should handle concurrent messages to same chat`() = runTest {
+        // Given
+        val chatId = "chat-123"
+        val messages = List(10) { index ->
+            Message(
+                chatId = chatId,
+                role = MessageRole.USER,
+                content = "Message $index",
+            )
+        }
+
+        messages.forEachIndexed { index, message ->
+            coEvery {
+                repository.sendMessage(chatId, "Message $index")
+            } returns Result.success(message)
+        }
+
+        // When - Send 10 concurrent messages to same chat
+        val results = List(10) { index ->
+            async { useCase(chatId, "Message $index") }
+        }.awaitAll()
+
+        // Then
+        results.forEach { result ->
+            result.isSuccess shouldBe true
+        }
+        coVerify(exactly = 10) { repository.sendMessage(chatId, any()) }
     }
 }

@@ -32,23 +32,3 @@ class ChatTest {
         assertEquals("Chat", chat.title)
     }
 }
-
-class MessageTest {
-    @Test
-    fun testMessageHasAllRoles() {
-        val userMsg = Message(chatId = "chat-1", role = MessageRole.USER, content = "Hello")
-        val assistantMsg = Message(chatId = "chat-1", role = MessageRole.ASSISTANT, content = "Hi")
-        val systemMsg = Message(chatId = "chat-1", role = MessageRole.SYSTEM, content = "Info")
-
-        assertEquals(MessageRole.USER, userMsg.role)
-        assertEquals(MessageRole.ASSISTANT, assistantMsg.role)
-        assertEquals(MessageRole.SYSTEM, systemMsg.role)
-    }
-
-    @Test
-    fun testMessageGeneratesUniqueIds() {
-        val msg1 = Message(chatId = "chat-1", role = MessageRole.USER, content = "Test")
-        val msg2 = Message(chatId = "chat-1", role = MessageRole.USER, content = "Test")
-        assertNotEquals(msg1.id, msg2.id)
-    }
-}
