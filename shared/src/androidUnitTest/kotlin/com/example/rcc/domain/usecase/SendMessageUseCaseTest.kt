@@ -144,4 +144,56 @@ class SendMessageUseCaseTest {
         // Then
         result.isSuccess shouldBe true
     }
+
+    @Test
+    fun `should fail when chatId is whitespace only`() = runTest {
+        // Given
+        val whitespaceChatId = "   "
+        val content = "Hello"
+
+        // When
+        val result = useCase(whitespaceChatId, content)
+
+        // Then
+        result.isFailure shouldBe true
+    }
+
+    @Test
+    fun `should succeed with UUID chatId`() = runTest {
+        // Given
+        val uuidChatId = "550e8400-e29b-41d4-a716-446655440000"
+        val content = "Hello"
+        val expectedMessage = Message(
+            chatId = uuidChatId,
+            role = MessageRole.USER,
+            content = content,
+        )
+        coEvery { repository.sendMessage(uuidChatId, content) } returns Result.success(expectedMessage)
+
+        // When
+        val result = useCase(uuidChatId, content)
+
+        // Then
+        result.isSuccess shouldBe true
+        result.getOrNull()?.chatId shouldBe uuidChatId
+    }
+
+    @Test
+    fun `should succeed with alphanumeric chatId`() = runTest {
+        // Given
+        val alphanumericChatId = "chat-abc-123"
+        val content = "Hello"
+        val expectedMessage = Message(
+            chatId = alphanumericChatId,
+            role = MessageRole.USER,
+            content = content,
+        )
+        coEvery { repository.sendMessage(alphanumericChatId, content) } returns Result.success(expectedMessage)
+
+        // When
+        val result = useCase(alphanumericChatId, content)
+
+        // Then
+        result.isSuccess shouldBe true
+    }
 }
