@@ -5,7 +5,7 @@ COPY . .
 RUN gradle :backend:buildFatJar --no-daemon
 
 # Stage 2: Runtime with Node.js and Claude CLI
-FROM eclipse-temurin:21-jre
+FROM eclipse-temurin:25-jre
 WORKDIR /app
 
 # Install curl and Node.js 22.x
