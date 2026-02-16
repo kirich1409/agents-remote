@@ -71,4 +71,77 @@ class SendMessageUseCaseTest {
         result.isFailure shouldBe true
         coVerify(exactly = 0) { repository.sendMessage(any(), any()) }
     }
+
+    @Test
+    fun `should fail when content is whitespace only`() = runTest {
+        // Given
+        val chatId = "chat-123"
+        val whitespaceContent = "   "
+
+        // When
+        val result = useCase(chatId, whitespaceContent)
+
+        // Then
+        result.isFailure shouldBe true
+        coVerify(exactly = 0) { repository.sendMessage(any(), any()) }
+    }
+
+    @Test
+    fun `should succeed with very long content`() = runTest {
+        // Given
+        val chatId = "chat-123"
+        val longContent = "a".repeat(10000)
+        val expectedMessage = Message(
+            chatId = chatId,
+            role = MessageRole.USER,
+            content = longContent,
+        )
+        coEvery { repository.sendMessage(chatId, longContent) } returns Result.success(expectedMessage)
+
+        // When
+        val result = useCase(chatId, longContent)
+
+        // Then
+        result.isSuccess shouldBe true
+        result.getOrNull()?.content shouldBe longContent
+    }
+
+    @Test
+    fun `should succeed with special characters in content`() = runTest {
+        // Given
+        val chatId = "chat-123"
+        val specialContent = "Hello! @#$%^&*() 你好 🚀"
+        val expectedMessage = Message(
+            chatId = chatId,
+            role = MessageRole.USER,
+            content = specialContent,
+        )
+        coEvery { repository.sendMessage(chatId, specialContent) } returns Result.success(expectedMessage)
+
+        // When
+        val result = useCase(chatId, specialContent)
+
+        // Then
+        result.isSuccess shouldBe true
+        result.getOrNull()?.content shouldBe specialContent
+    }
+
+    @Test
+    fun `should succeed with multiline content`() = runTest {
+        // Given
+        val chatId = "chat-123"
+        val multilineContent = "Line 1\nLine 2\nLine 3"
+        val expectedMessage = Message(
+            chatId = chatId,
+            role = MessageRole.USER,
+            content = multilineContent,
+        )
+        coEvery { repository.sendMessage(chatId, multilineContent) } returns Result.success(expectedMessage)
+
+        // When
+        val result = useCase(chatId, multilineContent)
+
+        // Then
+        result.isSuccess shouldBe true
+    }
 }
