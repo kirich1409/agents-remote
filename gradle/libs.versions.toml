@@ -2,7 +2,7 @@
 # Gradle and Kotlin
 gradle = "8.14.4"
 kotlin = "2.3.20-Beta2"
-agp = "8.13.2"
+agp = "9.0.1"
 ksp = "2.3.5"
 
 # Compose and UI
