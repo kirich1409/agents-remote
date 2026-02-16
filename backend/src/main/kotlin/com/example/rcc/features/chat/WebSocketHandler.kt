@@ -3,8 +3,9 @@ package com.example.rcc.features.chat
 import io.github.aakira.napier.Napier
 import io.ktor.websocket.Frame
 import io.ktor.websocket.WebSocketSession
-import kotlinx.coroutines.DelicateCoroutinesApi
-import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.launch
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.Json
@@ -31,6 +32,7 @@ public data class WebSocketEvent(val type: String, val data: String)
 public class WebSocketHandler {
     private val connections: ConcurrentHashMap<String, MutableSet<WebSocketSession>> =
         ConcurrentHashMap()
+    private val cleanupScope = CoroutineScope(SupervisorJob() + Dispatchers.Default)
 
     /**
      * Subscribes a WebSocket session to a chat.
@@ -83,7 +85,6 @@ public class WebSocketHandler {
      * @param chatId The chat identifier to broadcast to.
      * @param event The event to broadcast.
      */
-    @OptIn(DelicateCoroutinesApi::class)
     public suspend fun broadcast(chatId: String, event: WebSocketEvent) {
         val snapshot = connections[chatId]?.toList() ?: return
         val json = Json.encodeToString(WebSocketEvent.serializer(), event)
@@ -94,7 +95,7 @@ public class WebSocketHandler {
             } catch (e: Exception) {
                 Napier.w("Failed to send message to session", e)
                 // Асинхронный cleanup - не блокирует broadcast
-                GlobalScope.launch {
+                cleanupScope.launch {
                     try {
                         unsubscribe(chatId, session)
                     } catch (e: Exception) {
