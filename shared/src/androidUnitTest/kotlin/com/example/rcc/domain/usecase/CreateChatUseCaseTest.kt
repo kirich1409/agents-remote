@@ -50,4 +50,34 @@ class CreateChatUseCaseTest {
         result.isFailure shouldBe true
         coVerify(exactly = 0) { repository.createChat(any()) }
     }
+
+    @Test
+    fun `should propagate repository failure`() = runTest {
+        // Given
+        val sessionId = "session-123"
+        val exception = RuntimeException("Database connection failed")
+        coEvery { repository.createChat(sessionId) } returns Result.failure(exception)
+
+        // When
+        val result = useCase(sessionId)
+
+        // Then
+        result.isFailure shouldBe true
+        coVerify { repository.createChat(sessionId) }
+    }
+
+    @Test
+    fun `should handle repository network timeout`() = runTest {
+        // Given
+        val sessionId = "session-123"
+        coEvery { repository.createChat(sessionId) } returns Result.failure(
+            java.net.SocketTimeoutException("Connection timeout")
+        )
+
+        // When
+        val result = useCase(sessionId)
+
+        // Then
+        result.isFailure shouldBe true
+    }
 }
