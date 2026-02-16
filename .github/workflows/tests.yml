@@ -36,16 +36,27 @@ jobs:
       - name: Run all tests
         run: ./gradlew :shared:test :backend:test --no-daemon -i
 
-      - name: Generate test report
+      - name: Generate coverage reports
         if: always()
-        run: echo "Test reports skipped for Phase 1 (no testReport task configured)"
+        run: ./gradlew koverHtmlReportAll --no-daemon
 
       - name: Upload test results
         if: always()
         uses: actions/upload-artifact@v6
         with:
           name: test-results
-          path: build/reports/
+          path: |
+            shared/build/test-results/
+            backend/build/test-results/
+
+      - name: Upload coverage reports
+        if: always()
+        uses: actions/upload-artifact@v6
+        with:
+          name: coverage-reports
+          path: |
+            shared/build/reports/kover/html/
+            backend/build/reports/kover/html/
 
       - name: Comment on PR - Test Results
         if: github.event_name == 'pull_request'
@@ -53,13 +64,19 @@ jobs:
         with:
           script: |
             const fs = require('fs');
-            const testResults = fs.existsSync('build/test-results') ? '✅' : '❌';
+            const testResults = fs.existsSync('shared/build/test-results') || fs.existsSync('backend/build/test-results') ? '✅' : '❌';
             github.rest.issues.createComment({
               issue_number: context.issue.number,
               owner: context.repo.owner,
               repo: context.repo.repo,
-              body: `🧪 **Test Results**
+              body: `🧪 **Test Results & Coverage**
 
               ${testResults} Tests passed
-              📊 See artifacts for detailed reports`
+              📊 Coverage reports generated
+
+              **Artifacts:**
+              - 📋 Test results
+              - 📈 Coverage reports (HTML)
+
+              View detailed reports in workflow artifacts.`
             })

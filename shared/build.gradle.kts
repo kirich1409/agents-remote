@@ -6,6 +6,7 @@ plugins {
     id("app.cash.sqldelight")
     alias(libs.plugins.koin.compiler)
     id("io.gitlab.arturbosch.detekt")
+    alias(libs.plugins.kover)
 }
 
 kotlin {
@@ -97,6 +98,24 @@ android {
 
     defaultConfig {
         minSdk = 24
+    }
+}
+
+kover.reports {
+    filters {
+        excludes.classes(
+            "com.example.rcc.data.dto.*",
+            "com.example.rcc.database.*",
+            "*Dto",
+            "*Config",
+            "*Module",
+            "*_Factory",
+            "*_MembersInjector",
+            "*.BuildConfig",
+            "*RemoteCloudCodeDb*"
+        )
+        excludes.annotatedBy("*Generated*")
+        includes.classes("com.example.rcc.*")
     }
 }
 
