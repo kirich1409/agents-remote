@@ -89,7 +89,11 @@ public class ChatHandler(
      * @param chatId ID of the chat to delete.
      * @return Result success or failure.
      */
-    public suspend fun deleteChat(chatId: String): Result<Unit> = chatRepository.deleteChat(chatId)
+    public suspend fun deleteChat(chatId: String): Result<Unit> = runCatching {
+        chatRepository.deleteChat(chatId).getOrThrow()
+        // Cleanup session from ClaudeCodeService cache to free memory
+        claudeCodeService.cleanupSession(chatId)
+    }
 
     /**
      * Retrieves messages for a chat.

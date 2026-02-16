@@ -1,12 +1,13 @@
 package com.example.rcc.service
 
 import com.example.rcc.config.AppConfig
+import com.github.benmanes.caffeine.cache.Cache
+import com.github.benmanes.caffeine.cache.Caffeine
 import io.github.aakira.napier.Napier
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.Json
 import org.koin.core.annotation.Single
 import java.io.File
-import java.util.concurrent.ConcurrentHashMap
 import java.util.concurrent.TimeUnit
 
 @Serializable
@@ -25,7 +26,19 @@ public class ClaudeCodeService {
 
     private val claudePath: String = AppConfig.claudePath
     private val claudeModel: String = AppConfig.claudeModel
-    private val knownSessions: MutableSet<String> = ConcurrentHashMap.newKeySet()
+
+    /**
+     * Cache of known session IDs to track which sessions have been created.
+     *
+     * Uses Caffeine cache with automatic eviction to prevent memory leaks:
+     * - Maximum 10,000 sessions in memory
+     * - Sessions expire after 24 hours of inactivity
+     * - Automatically evicts least-recently-used entries when full
+     */
+    private val knownSessions: Cache<String, Boolean> = Caffeine.newBuilder()
+        .maximumSize(10_000)
+        .expireAfterWrite(24, TimeUnit.HOURS)
+        .build()
 
     /**
      * Sends a message to Claude Code CLI and returns the response.
@@ -37,7 +50,7 @@ public class ClaudeCodeService {
      * @return Result containing Claude's response text, or failure on error.
      */
     public fun sendMessage(sessionId: String, content: String): Result<String> = runCatching {
-        val isNewSession = sessionId !in knownSessions
+        val isNewSession = knownSessions.getIfPresent(sessionId) == null
         Napier.d("Sending message to Claude CLI, session=$sessionId, new=$isNewSession")
 
         val command = buildList {
@@ -78,9 +91,22 @@ public class ClaudeCodeService {
             error("Claude CLI exited with code $exitCode: $stdout")
         }
 
-        knownSessions.add(sessionId)
+        knownSessions.put(sessionId, true)
         val response = json.decodeFromString<ClaudeResponse>(stdout)
         response.result
+    }
+
+    /**
+     * Removes a session from the known sessions cache.
+     *
+     * This is optional cleanup when a chat is deleted. The cache will automatically
+     * evict entries after 24 hours, but explicit cleanup helps free memory sooner.
+     *
+     * @param sessionId Session identifier to remove from cache.
+     */
+    public fun cleanupSession(sessionId: String) {
+        knownSessions.invalidate(sessionId)
+        Napier.d("Cleaned up session from cache: $sessionId")
     }
 
     /**

@@ -30,6 +30,7 @@ dependencies {
     implementation(libs.napier)
     implementation(libs.kotlinx.coroutines.core)
     implementation(libs.kotlinx.serialization.json)
+    implementation(libs.caffeine)
 
     // Testing
     testImplementation(libs.kotlin.test)
