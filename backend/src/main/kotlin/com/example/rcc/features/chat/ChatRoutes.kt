@@ -20,6 +20,8 @@ import io.ktor.websocket.close
 import io.ktor.websocket.readText
 import org.koin.ktor.ext.inject
 
+private const val MAX_MESSAGE_LENGTH = 50_000  // 50KB
+
 /**
  * Configures chat routes for the application.
  *
@@ -122,6 +124,15 @@ private fun Route.chatRoutes(chatHandler: ChatHandler) {
                     return@post
                 }
                 val request = call.receive<SendMessageRequest>()
+
+                if (request.content.length > MAX_MESSAGE_LENGTH) {
+                    call.respond(
+                        HttpStatusCode.BadRequest,
+                        ErrorResponse(error = "Message too long (max: $MAX_MESSAGE_LENGTH characters)"),
+                    )
+                    return@post
+                }
+
                 chatHandler
                     .sendMessage(chatId, request.content)
                     .onSuccess { message ->
