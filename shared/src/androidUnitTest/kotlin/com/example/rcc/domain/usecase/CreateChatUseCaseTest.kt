@@ -7,6 +7,8 @@ import io.kotest.matchers.shouldBe
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.mockk
+import kotlinx.coroutines.async
+import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.test.runTest
 import kotlin.test.Test
 
@@ -145,5 +147,50 @@ class CreateChatUseCaseTest {
 
         // Then
         result.isSuccess shouldBe true
+    }
+
+    @Test
+    fun `should handle concurrent chat creation for different sessions`() = runTest {
+        // Given
+        val sessionId1 = "session-1"
+        val sessionId2 = "session-2"
+        val chat1 = Chat(sessionId = sessionId1)
+        val chat2 = Chat(sessionId = sessionId2)
+
+        coEvery { repository.createChat(sessionId1) } returns Result.success(chat1)
+        coEvery { repository.createChat(sessionId2) } returns Result.success(chat2)
+
+        // When - Launch concurrent calls
+        val deferred1 = async { useCase(sessionId1) }
+        val deferred2 = async { useCase(sessionId2) }
+        val result1 = deferred1.await()
+        val result2 = deferred2.await()
+
+        // Then
+        result1.isSuccess shouldBe true
+        result2.isSuccess shouldBe true
+        result1.getOrNull()?.sessionId shouldBe sessionId1
+        result2.getOrNull()?.sessionId shouldBe sessionId2
+        coVerify(exactly = 1) { repository.createChat(sessionId1) }
+        coVerify(exactly = 1) { repository.createChat(sessionId2) }
+    }
+
+    @Test
+    fun `should handle concurrent chat creation for same session`() = runTest {
+        // Given
+        val sessionId = "session-duplicate"
+        val chat = Chat(sessionId = sessionId)
+        coEvery { repository.createChat(sessionId) } returns Result.success(chat)
+
+        // When - Launch multiple concurrent calls with same sessionId
+        val results = List(5) {
+            async { useCase(sessionId) }
+        }.awaitAll()
+
+        // Then - All succeed (repository determines uniqueness)
+        results.forEach { result ->
+            result.isSuccess shouldBe true
+        }
+        coVerify(exactly = 5) { repository.createChat(sessionId) }
     }
 }
