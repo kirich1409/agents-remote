@@ -3,6 +3,7 @@ package com.example.rcc.data.repository
 import com.example.rcc.data.api.RccApiClient
 import com.example.rcc.domain.entity.Chat
 import com.example.rcc.domain.entity.Message
+import com.example.rcc.domain.error.ChatError
 import com.example.rcc.domain.repository.ChatRepository
 import org.koin.core.annotation.Single
 
@@ -10,8 +11,10 @@ import org.koin.core.annotation.Single
 internal class AppChatRepositoryImpl(private val apiClient: RccApiClient) : ChatRepository {
     override suspend fun getChats(): Result<List<Chat>> = runCatching { apiClient.getChats() }
 
-    override suspend fun getChatById(id: String): Result<Chat> =
-        runCatching { apiClient.getChats().first { it.id == id } }
+    override suspend fun getChatById(id: String): Result<Chat> = runCatching {
+        apiClient.getChats().firstOrNull { it.id == id }
+            ?: throw ChatError.NotFound("Chat with id $id not found")
+    }
 
     override suspend fun createChat(sessionId: String): Result<Chat> = runCatching { apiClient.createChat(sessionId) }
 
