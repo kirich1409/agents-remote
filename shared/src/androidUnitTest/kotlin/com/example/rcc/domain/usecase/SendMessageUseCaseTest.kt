@@ -196,4 +196,52 @@ class SendMessageUseCaseTest {
         // Then
         result.isSuccess shouldBe true
     }
+
+    @Test
+    fun `should propagate repository failure`() = runTest {
+        // Given
+        val chatId = "chat-123"
+        val content = "Hello"
+        val exception = RuntimeException("Database error")
+        coEvery { repository.sendMessage(chatId, content) } returns Result.failure(exception)
+
+        // When
+        val result = useCase(chatId, content)
+
+        // Then
+        result.isFailure shouldBe true
+        coVerify { repository.sendMessage(chatId, content) }
+    }
+
+    @Test
+    fun `should handle chat not found error`() = runTest {
+        // Given
+        val nonExistentChatId = "non-existent-chat"
+        val content = "Hello"
+        coEvery { repository.sendMessage(nonExistentChatId, content) } returns Result.failure(
+            NoSuchElementException("Chat not found")
+        )
+
+        // When
+        val result = useCase(nonExistentChatId, content)
+
+        // Then
+        result.isFailure shouldBe true
+    }
+
+    @Test
+    fun `should handle network timeout`() = runTest {
+        // Given
+        val chatId = "chat-123"
+        val content = "Hello"
+        coEvery { repository.sendMessage(chatId, content) } returns Result.failure(
+            java.net.SocketTimeoutException("Timeout")
+        )
+
+        // When
+        val result = useCase(chatId, content)
+
+        // Then
+        result.isFailure shouldBe true
+    }
 }
